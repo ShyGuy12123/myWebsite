@@ -1,0 +1,69 @@
+/*
+	tswnavbar.css	2.0.0
+	Please use the Navigation Menu Wizard at
+		https://www.thesitewizard.com/wizards/css-menu-buttons.shtml
+	to generate your own customized menu buttons.
+*/
+#custombox {
+	width: 180px ;
+	max-width: 100% ;
+	text-align: left ;
+}
+#tswcssbuttons {
+	width: 180px ;
+	max-width: 100% ;
+	text-align: center ;
+}
+#tswcssbuttons ul {
+	margin: 0 ;
+	padding: 0 ;
+	list-style: none ;
+}
+#tswcssbuttons li {
+	margin: 0 ;
+	padding: 0 ;
+	display: block ;
+	list-style: none ;
+	font-family: Arial, Helvetica, sans-serif ;
+}
+#tswcssbuttons li a {
+	color: #000000 ;
+	background-color: #ffffff ;
+	border: 1px outset #000000 ;
+	text-decoration: none ;
+	display: block ;
+}
+#tswcssbuttons li a:hover {
+	color: #000000 ;
+	background-color: #c0c0c0 ;
+}
+#tswhamburger {
+	display: none ;
+}
+@-ms-viewport { width: device-width ; }
+@viewport { width: device-width ; }
+@media only screen and (max-width:629px) {
+	#tswhamburger {
+		display: inline ;
+		width: 2em ;
+		font-weight: bold ;
+		font-size: 150% ;
+		color: #000000 ;
+		background-color: #ffffff ;
+	}
+	#tswhamburger2 {
+		display: inline ;
+		width: 2em ;
+		font-weight: bold ;
+		font-size: 150% ;
+		color: #000000 ;
+		background-color: #ffffff 
+	}
+	#tswhamburger:hover {
+		color: #ffffff ;
+		background-color: #000000 ;
+	}
+	#tswcssbuttons {
+		display: none ;
+	}
+}
