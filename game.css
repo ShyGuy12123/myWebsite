@@ -1,0 +1,80 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #333;
+    color: #eee;
+    text-align: center;
+    user-select: none; /* Prevents text selection during clicks */
+}
+
+h1, h2 {
+    color: #fff;
+}
+
+#game-world {
+    position: relative;
+    /* Convert to percentages for a fluid layout */
+    width: 90%;
+    max-width: 600px; /* Prevents the container from becoming too large on wide screens */
+    /* Use the modern aspect-ratio property to maintain shape. This correctly sets the height for child elements. */
+    aspect-ratio: 3 / 2;
+    background-color: #5a4535;
+    border: 5px solid #2a1d14; /* Borders are often best left in px for consistency */
+    margin: 2% auto;
+}
+
+#key {
+    position: absolute;
+    /* Position and size are now relative to the game-world container */
+    width: 5%; /* 30px / 600px */
+    height: 3.75%; /* 15px / 400px */
+    background-color: gold;
+    border: 1px solid #ccc;
+    top: 62.5%; /* 250px / 400px */
+    left: 66.7%; /* 400px / 600px */
+    cursor: pointer;
+}
+
+#chest {
+    position: absolute;
+    width: 13.33%; /* 80px / 600px */
+    height: 12.5%; /* 50px / 400px */
+    background-color: #8B4513; /* SaddleBrown */
+    border: 2px solid #4a2a0c;
+    top: 75%; /* 300px / 400px */
+    left: 16.67%; /* 100px / 600px */
+    cursor: pointer;
+}
+
+#chest.unlocked {
+    background-color: #a0522d; /* Sienna */
+}
+
+#inventory {
+    width: 90%;
+    max-width: 600px; /* Match the game world for consistency */
+    margin: 2% auto;
+    padding: 10px; /* Padding can stay in px for a consistent inner gutter */
+    border: 2px dashed #eee;
+}
+
+#inventory-slots {
+    min-height: 50px; /* A fixed min-height is best here to ensure the inventory is always usable */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inventory-item {
+    /* Kept as fixed px. Small UI elements can become too small or oddly */
+    /* shaped if they are percentage-based. This ensures the key always */
+    /* looks the same in the inventory, regardless of screen size. */
+    width: 30px;
+    height: 15px;
+    background-color: gold;
+    border: 1px solid #ccc;
+}
+
+#status-message {
+    font-size: 1.2em; /* 'em' is already a relative unit, which is great! */
+    font-weight: bold;
+}

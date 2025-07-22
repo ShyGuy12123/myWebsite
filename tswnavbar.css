@@ -4,15 +4,42 @@
 		https://www.thesitewizard.com/wizards/css-menu-buttons.shtml
 	to generate your own customized menu buttons.
 */
-#custombox {
-	width: 180px ;
-	max-width: 100% ;
-	text-align: left ;
-}
 #tswcssbuttons {
-	width: 180px ;
+	width: 5% ;
 	max-width: 100% ;
 	text-align: center ;
+
+	display: block;
+
+    /* Position it off-screen to the right */
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+
+    /* Ensure it's hidden and non-interactive but available for transition */
+    visibility: hidden;
+
+    /* Add a smooth transition for the slide effect */
+    transition: transform 0.3s ease-in-out, visibility 0.3s;
+
+    /* Optional: Add some basic styling for the panel */
+    height: 100vh; /* Full viewport height */
+    width: 250px; /* Adjust width as needed */
+    background: #fff; /* A background color is important */
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+    z-index: 1000; /* Ensure it's above other content */
+}
+#tswcssbuttons.active{
+    /* Move it into view */
+    transform: translateX(0);
+    visibility: visible;
+}
+
+#tswhamburger.active {
+    /* Move it into view */
+    transform: translateX(960%);
+    visibility: visible;
 }
 #tswcssbuttons ul {
 	margin: 0 ;
@@ -32,13 +59,37 @@
 	border: 1px outset #000000 ;
 	text-decoration: none ;
 	display: block ;
+	
+	border-radius: 10%;
 }
 #tswcssbuttons li a:hover {
 	color: #000000 ;
 	background-color: #c0c0c0 ;
 }
 #tswhamburger {
-	display: none ;
+	max-width: 100% ;
+	text-align: center ;
+
+	display: block;
+
+    /* Position it off-screen to the right */
+    position: fixed;
+    top: 0;
+    left: 2%;
+    transform: translateX(-100%);
+
+    /* Ensure it's hidden and non-interactive but available for transition */
+    visibility: visible;
+
+    /* Add a smooth transition for the slide effect */
+    transition: transform 0.3s ease-in-out, visibility 0.3s;
+
+    /* Optional: Add some basic styling for the panel */
+    /* height: 100vh; Full viewport height */
+    /* width: 250px; Adjust width as needed */
+    background: #fff; /* A background color is important */
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+    z-index: 1000; /* Ensure it's above other content */
 }
 @-ms-viewport { width: device-width ; }
 @viewport { width: device-width ; }
@@ -50,14 +101,6 @@
 		font-size: 150% ;
 		color: #000000 ;
 		background-color: #ffffff ;
-	}
-	#tswhamburger2 {
-		display: inline ;
-		width: 2em ;
-		font-weight: bold ;
-		font-size: 150% ;
-		color: #000000 ;
-		background-color: #ffffff 
 	}
 	#tswhamburger:hover {
 		color: #ffffff ;

@@ -1,18 +1,22 @@
+let open = true;
+
 function tsw_expand_navmenu() {
 
-    document.getElementById('tswcssbuttons').style.display = 'block';
+    if (open) {
 
-    document.getElementById('tswhamburger').style.display = 'none';
+        document.getElementById('tswcssbuttons').classList.remove('active');
 
-    document.getElementById('tswhamburger2').style.display = 'block';
+        document.getElementById('tswhamburger').classList.remove('active');
 
-}
-function tsw_contract_navmenu() {
+        open = false;
 
-    document.getElementById('tswcssbuttons').style.display = 'none';
+    } else {
 
-    document.getElementById('tswhamburger').style.display = 'block';
+        open = true;
 
-    document.getElementById('tswhamburger2').style.display = 'none';
+        document.getElementById('tswcssbuttons').classList.add('active');
+
+        document.getElementById('tswhamburger').classList.add('active');
+    }
 
 }
