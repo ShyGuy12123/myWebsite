@@ -1,0 +1,151 @@
+body {
+    font-family: monospace;
+    background-color: #222;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    user-select: none;
+}
+
+#game-container {
+    width: 800px;
+    max-width: 95%;
+    border: 4px solid #eee;
+    background-color: #333;
+    padding: 20px;
+    text-align: center;
+}
+
+#battle-scene {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 250px;
+    background-color: #4a5d45;
+    border: 2px solid #111;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#player-character, #enemy-character {
+    width: 150px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Simple representation of characters */
+.player-object {
+    flex-grow: 1; /* Allows the player object to fill available space */
+    width: 100px;
+    background-color: #6c9cde; /* Blue for player */
+    margin-bottom: 10px;
+}
+
+/* Base style for all enemy visuals */
+#enemy-character::before {
+    content: '';
+    display: block;
+    margin-bottom: 10px;
+    width: 80px;
+    height: 80px;
+    flex-grow: 0; /* Prevents it from stretching */
+}
+
+/* Style for the Slime */
+#enemy-character.slime::before {
+    background-color: #de6c6c; /* Red */
+    border-radius: 50% 50% 0 0; /* Slime shape */
+}
+
+/* Style for the Goblin */
+#enemy-character.goblin::before {
+    background-color: #2E8B57; /* SeaGreen, a nice goblin green */
+}
+
+.character-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.health-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: #555;
+    border: 1px solid #111;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.xp-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: #555;
+    border: 1px solid #111;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.health-bar {
+    height: 100%;
+    background-color: #4caf50; /* Green */
+    width: 100%;
+    transition: width 0.5s ease-in-out;
+}
+
+#player-xp-bar {
+    height: 100%;
+    background-color: #42B1ED; /* Blue */
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+}
+
+.hp-text {
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+#player-xp-text {
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+#actions-panel button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    font-family: monospace;
+    cursor: pointer;
+    border: 2px solid #eee;
+    background-color: #444;
+    color: #fff;
+}
+
+#actions-panel button:hover {
+    background-color: #555;
+}
+
+#actions-panel button:disabled {
+    cursor: not-allowed;
+    background-color: #333;
+    color: #777;
+    border-color: #777;
+}
+
+#message-log {
+    margin-top: 20px;
+    padding: 10px;
+    height: 100px;
+    border: 2px dashed #777;
+    overflow-y: auto;
+    text-align: left;
+    background-color: #2a2a2a;
+}
+
+#message-log p {
+    margin: 0 0 5px 0;
+    padding: 0;
+}

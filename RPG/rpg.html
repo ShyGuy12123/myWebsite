@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple RPG</title>
+    <link rel="stylesheet" href="rpg.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Monster Battle</h1>
+        <div id="battle-scene">
+            <div id="player-character">
+                <div class="xp-bar-container">
+                    <div id="player-xp-bar"></div>
+                </div>
+                <div id="player-xp-text" >0 / 10</div>
+                <div class = "player-object"></div>
+                <div class="character-name">Hero</div>
+                <div class="health-bar-container">
+                    <div id="player-health-bar" class="health-bar"></div>
+                </div>
+                <div id="player-hp-text" class="hp-text">100 / 100</div>
+                <div class="character-name">Hero</div>
+            </div>
+            <div id="enemy-character">
+                <div class="character-name">Slime</div>
+                <div class="health-bar-container">
+                    <div id="enemy-health-bar" class="health-bar"></div>
+                </div>
+                <div id="enemy-hp-text" class="hp-text">50 / 50</div>
+            </div>
+        </div>
+        <div id="actions-panel">
+            <button id="attack-button">Attack</button>
+            <button id="heal-button">Heal</button>
+        </div>
+        <div id="message-log">
+            <p>A bright new world! Oh no!</p>
+        </div>
+    </div>
+    <script src="rpg.js" defer></script>
+</body>
+</html>

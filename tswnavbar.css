@@ -75,7 +75,7 @@
     /* Position it off-screen to the right */
     position: fixed;
     top: 0;
-    left: 2%;
+    left: 1.2%;
     transform: translateX(-100%);
 
     /* Ensure it's hidden and non-interactive but available for transition */
