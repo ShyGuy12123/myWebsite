@@ -58,23 +58,35 @@ let select_y = -1
 function select(x, y) {
     let cell = CELLS[y][x];
     if(cell.innerHTML.length > 0) {
+        if (select_x != -1 && select_y != -1) {
+            CELLS[select_y][select_x].classList.remove("selected")
+        }
         select_x = x;
         select_y = y;
         cell.classList.add("selected");
     }
 }
 
-function move(x, y) {
-
-}
-
 function unselect(x, y) {
-
+    CELLS[y][x].classList.remove("selected");
+    select_x = -1;
+    select_y = -1;
 }
 
 function can_move(x, y) {
+    let is_next_to = Math.abs(select_x - x) + Math.abs(select_y - y) == 1
 
+    return select_x != -1 && select_y != -1 && is_next_to && CELLS[y][x].innerHTML.length > 0;
 }
+
+function move(x, y) {
+    if (can_move(x, y)) {
+    CELLS[y][x].innerHTML = CELLS[select_y][select_x].innerHTML + CELLS[y][x].innerHTML;
+    CELLS[select_y][select_x].innerHTML = ""; 
+    select(x, y);
+    }
+}
+
 
 function on_click(x, y) {
     if (select_x == x && select_y == y) {

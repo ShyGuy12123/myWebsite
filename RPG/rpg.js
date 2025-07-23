@@ -1,3 +1,16 @@
+// --- GAME LOGIC ---
+
+/**
+ * Generates a random floating-point number between a min (inclusive) and a max (exclusive).
+ * @param {number} min The minimum value.
+ * @param {number} max The maximum value.
+ * @returns {number} A random number within the specified range.
+ */
+
+function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 // --- GAME SETUP ---
 const player = {
     name: 'Hero',
@@ -79,7 +92,7 @@ function endOfTurn() {
     if (currentEnemy.currentHp <= 0) {
         logMessage(`You have defeated the ${currentEnemy.name}!`);
 
-        const xpGained = Math.floor((Math.random() * currentEnemy.maxHp) / 3) + 1;
+        const xpGained = Math.floor(randomInRange(0.5, 1) * currentEnemy.maxHp) + 1;
         player.currentXp += 30;
 
         logMessage(`You gained ${xpGained} experience points.`);

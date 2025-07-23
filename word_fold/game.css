@@ -18,7 +18,7 @@ h1 {
     gap: 8px;
 }
 
-.cell{
+.cell {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,6 +27,6 @@ h1 {
     overflow-wrap: anywhere;
 }
 
-.cell .selected{
-    border: yellow 8px solid
+.selected {
+    border: yellow 8px solid;
 }
