@@ -62,6 +62,16 @@ body {
     border-radius: 50% 50% 0 0; /* Slime shape */
 }
 
+#enemy-character.crab::before {
+    background-color: #d36e2a; /* Red */
+    border-radius: 25% 25% 0 0; /* Slime shape */
+}
+
+#enemy-character.golem::before {
+    background-color: #5c5a58; /* Red */
+    border-radius: 5% 5% 0 0; /* Slime shape */
+}
+
 /* Style for the Goblin */
 #enemy-character.goblin::before {
     background-color: #2E8B57; /* SeaGreen, a nice goblin green */

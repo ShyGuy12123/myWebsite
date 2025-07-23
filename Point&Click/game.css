@@ -1,80 +1,109 @@
 body {
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #333;
-    color: #eee;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
     text-align: center;
-    user-select: none; /* Prevents text selection during clicks */
+    margin: 0;
+    padding: 20px;
 }
 
-h1, h2 {
-    color: #fff;
+h1 {
+    color: #4a4a4a;
 }
 
 #game-world {
     position: relative;
-    /* Convert to percentages for a fluid layout */
-    width: 90%;
-    max-width: 600px; /* Prevents the container from becoming too large on wide screens */
-    /* Use the modern aspect-ratio property to maintain shape. This correctly sets the height for child elements. */
-    aspect-ratio: 3 / 2;
-    background-color: #5a4535;
-    border: 5px solid #2a1d14; /* Borders are often best left in px for consistency */
-    margin: 2% auto;
+    width: 800px;
+    height: 600px;
+    border: 3px solid #8b4513; /* SaddleBrown */
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    overflow: hidden; /* Ensures gradients stay within the border */
+
+    /* A multi-layered background to create a stylized map */
+    background-color: #a5d6a7; /* Base land color (light green) */
+    background-image:
+        /* Layer 3 (Top): Mountain Range - a greyish oval shape */
+        radial-gradient(ellipse at 450px 250px, #B0BEC5 40px, #90A4AE 100px, transparent 150px),
+        /* Layer 2: Forest Area - a dark green circle */
+        radial-gradient(circle at 180px 130px, #388E3C 60px, #4CAF50 120px, transparent 121px),
+        /* Layer 1 (Bottom): Ocean and Beach */
+        linear-gradient(to top, #4FC3F7 25%, #F5EAAA 35%, transparent 36%);
 }
 
-#key {
+.location {
     position: absolute;
-    /* Position and size are now relative to the game-world container */
-    width: 5%; /* 30px / 600px */
-    height: 3.75%; /* 15px / 400px */
-    background-color: gold;
-    border: 1px solid #ccc;
-    top: 62.5%; /* 250px / 400px */
-    left: 66.7%; /* 400px / 600px */
     cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    width: 120px; /* A bit wider to accommodate the label */
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
 }
 
-#chest {
-    position: absolute;
-    width: 13.33%; /* 80px / 600px */
-    height: 12.5%; /* 50px / 400px */
-    background-color: #8B4513; /* SaddleBrown */
-    border: 2px solid #4a2a0c;
-    top: 75%; /* 300px / 400px */
-    left: 16.67%; /* 100px / 600px */
-    cursor: pointer;
+/* This pseudo-element creates the circular icon */
+.location::before {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 10px; /* Center the icon and add space below for the label */
+    border: 4px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+
+    /* Image properties are now on the pseudo-element */
+    background-size: cover;
+    background-position: center;
 }
 
-#chest.unlocked {
-    background-color: #a0522d; /* Sienna */
+.location:hover {
+    transform: scale(1.1);
+}
+
+.location:hover::before {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    border-color: #fff;
+}
+
+#forest {
+    top: 80px; left: 130px;
+}
+#forest::before {
+    /* background-image: url('path/to/your/forest-icon.png'); */
+    background-color: #2E7D32; /* Fallback color */
+}
+
+#beach {
+    top: 420px; left: 580px;
+}
+#beach::before {
+    /* background-image: url('path/to/your/beach-icon.png'); */
+    background-color: #FBC02D; /* Fallback color */
+}
+
+#mountain {
+    top: 180px; left: 380px;
+}
+#mountain::before {
+    /* background-image: url('path/to/your/mountain-icon.png'); */
+    background-color: #607D8B; /* Fallback color */
 }
 
 #inventory {
-    width: 90%;
-    max-width: 600px; /* Match the game world for consistency */
-    margin: 2% auto;
-    padding: 10px; /* Padding can stay in px for a consistent inner gutter */
-    border: 2px dashed #eee;
-}
-
-#inventory-slots {
-    min-height: 50px; /* A fixed min-height is best here to ensure the inventory is always usable */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.inventory-item {
-    /* Kept as fixed px. Small UI elements can become too small or oddly */
-    /* shaped if they are percentage-based. This ensures the key always */
-    /* looks the same in the inventory, regardless of screen size. */
-    width: 30px;
-    height: 15px;
-    background-color: gold;
-    border: 1px solid #ccc;
+    display: none; /* Hiding inventory for now as it's not used in the map view. */
 }
 
 #status-message {
-    font-size: 1.2em; /* 'em' is already a relative unit, which is great! */
-    font-weight: bold;
+    margin: 20px auto;
+    font-style: italic;
+    color: #555;
+    width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

@@ -11,33 +11,67 @@ function randomInRange(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+/**
+ * Selects an item from a pool based on weights.
+ * @param {Array<Object>} pool The pool of items to choose from. Each item must have a 'weight' property.
+ * @returns {Object} The selected item.
+ */
+function getWeightedRandom(pool) {
+    const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+    let random = Math.random() * totalWeight;
+
+    for (const item of pool) {
+        if (random < item.weight) {
+            return item;
+        }
+        random -= item.weight;
+    }
+}
+
 // --- GAME SETUP ---
 const player = {
     name: 'Hero',
-    maxHp: 100,
-    currentHp: 100,
-    attackPower: 10,
+    maxHp: 25,
+    currentHp: 25,
+    attackPower: 3,
     currentXp: 0,
     maxXp: 10,
     level: 1,
 };
 
-const enemyTypes = [
-    {
-        name: 'Slime',
-        maxHp: 50,
-        attackPower: 5,
-        cssClass: 'slime',
-    },
-    {
-        name: 'Goblin',
-        maxHp: 70,
-        attackPower: 8,
-        cssClass: 'goblin',
-    }
-];
+// A central place for all enemy stats and details
+const enemyTemplates = {
+    'Forest Slime': { name: 'Slime', maxHp: 10, attackPower: 5, cssClass: 'slime' },
+    'Slime': { name: 'Slime', maxHp: 50, attackPower: 5, cssClass: 'slime' },
+    'Goblin': { name: 'Goblin', maxHp: 70, attackPower: 8, cssClass: 'goblin' },
+    'Giant Crab': { name: 'Giant Crab', maxHp: 80, attackPower: 12, cssClass: 'crab' },
+    'Stone Golem': { name: 'Stone Golem', maxHp: 120, attackPower: 10, cssClass: 'golem' }
+};
+
+// Defines which enemies can spawn in each location and their frequency (weight)
+const locationEnemyPools = {
+    'forest': [
+        { type: 'Goblin', weight: 0 }, // 70% chance
+        { type: 'Forest Slime', weight: 100 }   // 30% chance
+    ],
+    'beach': [
+        { type: 'Giant Crab', weight: 80 },
+        { type: 'Slime', weight: 20 }
+    ],
+    'mountain': [
+        { type: 'Stone Golem', weight: 100 } // Always a Stone Golem
+    ],
+    'default': [ // A fallback for when no location is specified
+        { type: 'Slime', weight: 100 }
+    ]
+};
+
+// --- INITIALIZATION ---
+const urlParams = new URLSearchParams(window.location.search);
+const gameLocation = urlParams.get('location') || 'default'; // Use 'default' if no location is provided
 
 let currentEnemy = {};
+let enemiesDefeated = 0;
 
 // --- DOM ELEMENTS ---
 const playerHpText = document.getElementById('player-hp-text');
@@ -90,20 +124,24 @@ function enableButtons() {
 
 function endOfTurn() {
     if (currentEnemy.currentHp <= 0) {
+        // --- ENEMY DEFEATED ---
         logMessage(`You have defeated the ${currentEnemy.name}!`);
+        enemiesDefeated++;
 
-        const xpGained = Math.floor(randomInRange(0.5, 1) * currentEnemy.maxHp) + 1;
-        player.currentXp += 30;
+        // --- GAIN EXPERIENCE ---
+        const xpGained = Math.round(randomInRange(0.5, 1) * currentEnemy.maxHp) + 1;
+        player.currentXp += xpGained;
 
         logMessage(`You gained ${xpGained} experience points.`);
 
+        // --- LEVEL UP CHECK ---
         while (player.currentXp >= player.maxXp) {
             player.currentXp -= player.maxXp;
-            let hpIncrease = Math.floor(Math.random() * player.maxXp * 0.2) + 1
+            let hpIncrease = Math.round(randomInRange(0.5, 1) * 2)
             player.level += 1;
             player.maxHp += hpIncrease;
             player.currentHp += hpIncrease;
-            player.attackPower += Math.floor(Math.random() * player.maxXp * 0.2) + 1;
+            player.attackPower += Math.round(randomInRange(0.5, 1) * 2);
 
             player.maxXp += Math.round(player.level * 0.5);
             logMessage(`--------------------------------------------------`);
@@ -116,9 +154,25 @@ function endOfTurn() {
 
         updateUI();
 
-        // Spawn the next enemy after a delay
-        logMessage('A new challenger approaches...');
-        setTimeout(spawnEnemy, 2000);
+        // --- VICTORY CHECK ---
+        const locationInfo = gameData.locations[gameLocation] || gameData.locations.default;
+        const maxEnemies = locationInfo.maxEnemies;
+
+        logMessage(`Enemies defeated: ${enemiesDefeated} / ${maxEnemies}`);
+
+        if (enemiesDefeated >= maxEnemies) {
+            // Location cleared!
+            logMessage(locationInfo.clearedMessage);
+            logMessage('Returning to the map...');
+            disableButtons();
+            setTimeout(() => {
+                window.location.href = `cleared.html?location=${gameLocation}`;
+            }, 4000); // 4-second delay before redirecting
+        } else {
+            // Spawn the next enemy after a delay
+            logMessage('A new challenger approaches...');
+            setTimeout(spawnEnemy, 2000);
+        }
 
     } else {
         // Enemy's turn
@@ -133,7 +187,7 @@ function playerAttack() {
     disableButtons();
 
     // Calculate damage with a bit of randomness
-    const damage = Math.floor(Math.random() * player.attackPower) + 1;
+    const damage = Math.floor(randomInRange(0.75, 1.25) * player.attackPower) + 1;
     currentEnemy.currentHp = Math.max(0, currentEnemy.currentHp - damage);
     logMessage(`You attack the ${currentEnemy.name} for ${damage} damage.`);
     updateUI();
@@ -142,7 +196,7 @@ function playerAttack() {
 
 function playerHeal() {
     disableButtons();
-    const heal = Math.floor(Math.random() * player.attackPower) + 1;
+    const heal = Math.floor(randomInRange(0.75, 1.25) * player.attackPower) + 1;
     player.currentHp = Math.min(player.maxHp, player.currentHp + heal);
     logMessage(`You heal yourself for ${heal} HP.`);
     updateUI();
@@ -153,7 +207,7 @@ function playerHeal() {
 
 // Function to handle an enemy's attack
 function enemyAttack() {
-    const damage = Math.floor(Math.random() * currentEnemy.attackPower) + 1;
+    const damage = Math.floor(randomInRange(0.75, 1.25) * currentEnemy.attackPower) + 1;
     player.currentHp = Math.max(0, player.currentHp - damage);
     logMessage(`The ${currentEnemy.name} attacks you for ${damage} damage.`);
     updateUI();
@@ -174,7 +228,11 @@ function spawnEnemy() {
         enemyCharacterElement.classList.remove(currentEnemy.cssClass);
     }
 
-    const enemyTemplate = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+    // Select an enemy pool based on the location, or use the default
+    const enemyPool = locationEnemyPools[gameLocation] || locationEnemyPools['default'];
+    const chosenEnemyInfo = getWeightedRandom(enemyPool);
+    const enemyTemplate = enemyTemplates[chosenEnemyInfo.type];
+
     // Create a copy so we don't modify the original template
     currentEnemy = { ...enemyTemplate, currentHp: enemyTemplate.maxHp };
 
@@ -195,5 +253,11 @@ healButton.addEventListener('click', () => {
     playerHeal();
 });
 
-// --- INITIALIZE ---
+// --- GAME START ---
+
+// Set the initial message based on the location
+
+logMessage(`You enter the ${gameLocation}...`)
+
+// Spawn the first enemy for this location
 spawnEnemy();
