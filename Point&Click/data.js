@@ -2,9 +2,12 @@ const defaultPlayerData = {
     level: 1,
     xp: 0,
     maxXp: 10,
+    xpMultiplier: 1,
     hp: 25,
     maxHp: 25,
+    hpMultiplier: 1,
     attackPower: 5,
+    attackMultiplier: 1,
     items: [],
     clearedLocations: []
 };

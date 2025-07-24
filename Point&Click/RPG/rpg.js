@@ -89,6 +89,7 @@ const healButton = document.getElementById('heal-button');
 // --- GAME LOGIC ---
 
 // Function to add a message to the log
+
 function logMessage(message) {
     const newMessage = document.createElement('p');
     newMessage.textContent = message;
@@ -130,15 +131,15 @@ function handleLevelUp() {
     while (playerData.xp >= playerData.maxXp) {
         playerData.xp -= playerData.maxXp;
         playerData.level += 1;
-        const hpIncrease = Math.round(randomInRange(1, 4) * (playerData.level^0.5) / 8);
-        const attackIncrease = Math.round(randomInRange(1, 4) * (playerData.level^0.5) / 8);
+        const hpIncrease = Math.round((randomInRange(1, 4) * (playerData.level^0.5) / 8) * playerData.hpMultiplier);
+        const attackIncrease = Math.round((randomInRange(1, 4) * (playerData.level^0.5) / 8)  * playerData.attackMultiplier);
         playerData.maxHp += hpIncrease;
         playerData.attackPower += attackIncrease;
         playerData.hp += hpIncrease; // Full heal on level up
 
         logMessage(`--------------------------------------------------`);
-        logMessage(`HP increased by ${hpIncrease}!`);
-        logMessage(`Attack Power increased by ${attackIncrease}!`);
+        logMessage(`HP increased by ${hpIncrease}! It is now ${playerData.maxHp}!`);
+        logMessage(`Attack Power increased by ${attackIncrease}! It is now ${playerData.attackPower}!`);
         logMessage(`--------------------------------------------------`);
         logMessage(`You leveled up! You are now level ${playerData.level}!`);
         logMessage(`--------------------------------------------------`);
@@ -165,7 +166,7 @@ function endOfTurn() {
         enemiesDefeated++;
 
         // --- GAIN EXPERIENCE ---
-        const xpGained = Math.round(randomInRange(0.5, 1) * currentEnemy.maxHp) + 1;
+        const xpGained = Math.round((randomInRange(0.5, 1) * currentEnemy.maxHp) * playerData.xpMultiplier) + 1;
         playerData.xp += xpGained;
 
         logMessage(`You gained ${xpGained} experience points.`);

@@ -120,12 +120,28 @@ document.addEventListener('DOMContentLoaded', () => {
             // This marks the location as cleared so the puzzle can't be repeated.
             const urlParams = new URLSearchParams(window.location.search);
             const locationName = urlParams.get('location');
+
             if (locationName) {
                 if (!playerData.clearedLocations) playerData.clearedLocations = [];
                 if (!playerData.clearedLocations.includes(locationName)) {
                     playerData.clearedLocations.push(locationName);
                 }
             }
+
+            if (locationName === 'forest') {
+                messageEl.textContent = "You collected the Glowing Orb of Health! You feel more fortified by 50%!";
+                playerData.hp *= 1.5;
+                playerData.maxHp *= 1.5;
+                playerData.hpMultiplier = 1.5;
+            }  else if (locationName === 'beach') {
+                messageEl.textContent = "You collected the Glowing Orb of Attack! You feel more powerful by 50%!";
+                playerData.attackPower *= 1.5;
+                playerData.attackMultiplier = 1.5;
+            } else if (locationName === 'mountain') {
+                messageEl.textContent = "You collected the Glowing Orb of Skill! You feel more capable by 50%!";
+                playerData.xpMultiplier = 1.5;
+            }
+
             savePlayerData();
             console.log('Player data updated:', playerData);
         } else {
@@ -133,8 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         boostItemEl.classList.add('hidden');
-        messageEl.textContent = "You collected the Glowing Orb of Power! You feel slightly stronger.";
+        
         returnButton.classList.remove('hidden');
+
         // Update the inventory display after collecting the item
         //updateInventoryDisplay();
     });
