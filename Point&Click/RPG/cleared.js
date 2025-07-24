@@ -76,13 +76,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
     });
 
+    let key;
+
     keyEl.addEventListener('click', () => {
+        const itemSlot = document.createElement('div');
         itemSlot.classList.add('inventory-slot');
         itemSlot.textContent = keyEl.textContent; // Placeholder icon
         itemSlot.title = keyEl.title; // Show item name on hover
         inventorySlots.appendChild(itemSlot);
         hasKey = true;
         keyEl.classList.add('hidden');
+        key = itemSlot;
     });
 
     // Click on the chest
@@ -90,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chestOpened || itemCollected) return; // Don't do anything if already open
 
         if (hasKey) {
+            key.remove();
             chestOpened = true;
             chestEl.textContent = '📖'; // Change to an open chest emoji
             keyEl.classList.add('hidden'); // Key is used
@@ -114,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!playerData.items) {
                 playerData.items = [];
             }
-            playerData.items.push('Glowing Orb of Power');
+            
 
             // Get the location name from the URL (e.g., "cleared.html?location=forest")
             // This marks the location as cleared so the puzzle can't be repeated.
@@ -133,13 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 playerData.hp *= 1.5;
                 playerData.maxHp *= 1.5;
                 playerData.hpMultiplier = 1.5;
+                playerData.items.push('Glowing Orb of Health');
             }  else if (locationName === 'beach') {
                 messageEl.textContent = "You collected the Glowing Orb of Attack! You feel more powerful by 50%!";
                 playerData.attackPower *= 1.5;
                 playerData.attackMultiplier = 1.5;
+                playerData.items.push('Glowing Orb of Power');
             } else if (locationName === 'mountain') {
                 messageEl.textContent = "You collected the Glowing Orb of Skill! You feel more capable by 50%!";
                 playerData.xpMultiplier = 1.5;
+                playerData.items.push('Glowing Orb of Skill');
             }
 
             savePlayerData();

@@ -1,18 +1,23 @@
 const widget_container = document.getElementById("widget-container");
 const stores = document.getElementsByClassName("store");
 const score_element = document.getElementById("score");
+const field_element = document.getElementById("field");
 let score = 5;
+let own_field = 0;
 let super_gompei_count = 0;
 
-function changeScore(amount) {
+function changeScore(amount, sqft) {
     score += amount;
+    own_field += sqft;
     score_element.innerHTML = "Score: " + score;
+    field_element.innerHTML = "Sqft: " + own_field;
 
     // Update the stores to block buying expensive boxes
     for (let store of stores) {
         let cost = parseInt(store.getAttribute("cost"));
+        let field = parseInt(store.getAttribute("field"));
 
-        if (score < cost) {
+        if ((score < cost) || (field * -1 > own_field)) {
             store.setAttribute("broke", "");
         } else {
             store.removeAttribute("broke");
@@ -21,12 +26,30 @@ function changeScore(amount) {
 }
 function buy(store) {
     const cost = parseInt(store.getAttribute("cost"));
+    let field = parseInt(store.getAttribute("field"));
 
-    if (score < cost) {
+    if (score < cost || field * -1 > own_field) {
         return;
     }
 
-    changeScore(-cost);
+    changeScore(-cost, field);
+
+    field *= -1;
+
+    while (field > 0) {
+        field -= 5;
+        for (let x = 0; x < widget_container.childNodes.length; x++) {
+            console.log(widget_container.childNodes[x].getAttribute("name"))
+            try {
+                if (widget_container.childNodes[x].getAttribute("name") === "Lawn") {
+                widget_container.childNodes[x].remove()
+                break;
+                }
+            } catch (e) {
+            console.log(e)
+            }
+        }
+    }
 
     // If Super-Gompei already exists
     const superGompei = document.querySelector("#widget-container #super-gompei")?.parentElement;
@@ -70,7 +93,7 @@ function harvest(widget) {
     widget.setAttribute("harvesting", "");
 
     // If manual, collect points now
-    changeScore(parseInt(widget.getAttribute("reap")));
+    changeScore(parseInt(widget.getAttribute("reap")), parseInt(widget.getAttribute("reap2")));
     showPoint(widget);
 
     setup_end_harvest(widget);
@@ -87,4 +110,4 @@ function showPoint(widget) {
     widget.appendChild(number);
 }
 
-changeScore(0);
+changeScore(0, 0);
