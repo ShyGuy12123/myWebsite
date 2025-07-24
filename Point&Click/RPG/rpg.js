@@ -130,16 +130,17 @@ function handleLevelUp() {
     while (playerData.xp >= playerData.maxXp) {
         playerData.xp -= playerData.maxXp;
         playerData.level += 1;
-        const hpIncrease = Math.round(randomInRange(1, 2));
-        const attackIncrease = Math.round(randomInRange(1, 2));
+        const hpIncrease = Math.round(randomInRange(1, 4) * (playerData.level^0.5) / 8);
+        const attackIncrease = Math.round(randomInRange(1, 4) * (playerData.level^0.5) / 8);
         playerData.maxHp += hpIncrease;
         playerData.attackPower += attackIncrease;
         playerData.hp += hpIncrease; // Full heal on level up
 
         logMessage(`--------------------------------------------------`);
+        logMessage(`HP increased by ${hpIncrease}!`);
+        logMessage(`Attack Power increased by ${attackIncrease}!`);
+        logMessage(`--------------------------------------------------`);
         logMessage(`You leveled up! You are now level ${playerData.level}!`);
-        logMessage(`Max HP increased by ${hpIncrease}. You are fully healed.`);
-        logMessage(`Attack Power increased by ${attackIncrease}.`);
         logMessage(`--------------------------------------------------`);
 
         // Get the XP requirement for the *new* level

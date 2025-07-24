@@ -15,14 +15,17 @@ h1 {
     position: relative;
     width: 800px;
     height: 600px;
-    border: 3px solid #8b4513; /* SaddleBrown */
+    border: 3px solid #8b4513;
+    /* SaddleBrown */
     margin: 20px auto;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    overflow: hidden; /* Ensures gradients stay within the border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    /* Ensures gradients stay within the border */
 
     /* A multi-layered background to create a stylized map */
-    background-color: #a5d6a7; /* Base land color (light green) */
+    background-color: #a5d6a7;
+    /* Base land color (light green) */
     background-image:
         /* Layer 3 (Top): Mountain Range - a greyish oval shape */
         radial-gradient(ellipse at 450px 250px, #B0BEC5 40px, #90A4AE 100px, transparent 150px),
@@ -36,10 +39,11 @@ h1 {
     position: absolute;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
-    width: 120px; /* A bit wider to accommodate the label */
+    width: 120px;
+    /* A bit wider to accommodate the label */
     color: #fff;
     font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 /* This pseudo-element creates the circular icon */
@@ -48,10 +52,11 @@ h1 {
     display: block;
     width: 100px;
     height: 100px;
-    margin: 0 auto 10px; /* Center the icon and add space below for the label */
+    margin: 0 auto 10px;
+    /* Center the icon and add space below for the label */
     border: 4px solid rgba(255, 255, 255, 0.7);
     border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 
     /* Image properties are now on the pseudo-element */
@@ -64,36 +69,46 @@ h1 {
 }
 
 .location:hover::before {
-    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
     border-color: #fff;
 }
 
 #forest {
-    top: 80px; left: 130px;
+    top: 80px;
+    left: 130px;
 }
+
 #forest::before {
     /* background-image: url('path/to/your/forest-icon.png'); */
-    background-color: #2E7D32; /* Fallback color */
+    background-color: #2E7D32;
+    /* Fallback color */
 }
 
 #beach {
-    top: 420px; left: 580px;
+    top: 420px;
+    left: 580px;
 }
+
 #beach::before {
     /* background-image: url('path/to/your/beach-icon.png'); */
-    background-color: #FBC02D; /* Fallback color */
+    background-color: #FBC02D;
+    /* Fallback color */
 }
 
 #mountain {
-    top: 180px; left: 380px;
+    top: 180px;
+    left: 380px;
 }
+
 #mountain::before {
     /* background-image: url('path/to/your/mountain-icon.png'); */
-    background-color: #607D8B; /* Fallback color */
+    background-color: #607D8B;
+    /* Fallback color */
 }
 
 #inventory {
-    display: block; /* Hiding inventory for now as it's not used in the map view. */
+    display: block;
+    /* Hiding inventory for now as it's not used in the map view. */
 }
 
 #status-message {
@@ -105,7 +120,7 @@ h1 {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #inventory {
@@ -115,8 +130,9 @@ h1 {
     background-color: #2a2a2a;
     width: 100%;
     max-width: 750px;
-    text-align: left;
-    margin-left: 27%;
+    text-align: center; /* Center the "Inventory" title */
+    margin-left: auto;  /* This, along with margin-right, centers the box */
+    margin-right: auto;
 }
 
 #inventory h2 {
@@ -128,9 +144,17 @@ h1 {
 #inventory-slots {
     display: flex;
     flex-wrap: wrap;
+    /* This is the key: allows items to wrap to the next line */
+    justify-content: center;
+    /* This keeps the items centered horizontally */
     gap: 10px;
-    min-height: 50px;
-    align-items: center;
+    /* Adds a nice space between your inventory items */
+    padding: 10px;
+    max-width: 800px;
+    /* Constrains the inventory width on large screens */
+    margin: 0 auto;
+    /* Centers the inventory box itself */
+    border-radius: 8px;
 }
 
 .inventory-slot {
@@ -142,11 +166,13 @@ h1 {
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    cursor: help; /* Indicates the title attribute has info */
+    cursor: help;
+    /* Indicates the title attribute has info */
 }
 
 /* --- Location Styles (for game.html) --- */
 .location.cleared {
-    border-color: #4caf50; /* Green border for cleared locations */
+    border-color: #4caf50;
+    /* Green border for cleared locations */
     color: #8bc34a;
 }

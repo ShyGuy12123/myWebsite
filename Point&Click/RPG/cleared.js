@@ -16,14 +16,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const inventorySlots = document.getElementById('inventory-slots');
 
     // --- Game State ---
+    let checkedRock = false;
     let hasKey = false;
     let chestOpened = false;
     let itemCollected = false;
 
+    if (checkLocation()) {
+        returnButton.classList.remove('hidden');
+        messageEl.textContent = "It appears that you have already been here.";
+        checkedRock = true;
+        rocksEl.style.opacity = '0.5'; // Make it look used
+        rocksEl.style.cursor = 'default';
+        chestOpened = true;
+        chestEl.textContent = '📖'; // Change to an open chest emoji
+    }
+    
+
     // --- Event Listeners ---
 
+    function checkLocation() {
+        // Get the URL parameters to find out which location we're at
+        const params = new URLSearchParams(window.location.search);
+        const locationId = params.get('location');
+
+        for (let i = 0; i < playerData.clearedLocations.length; i++) {
+            if (playerData.clearedLocations[i] === locationId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // --- Inventory Display Function ---
-    function updateInventoryDisplay() {
+    /*function updateInventoryDisplay() {
         inventorySlots.innerHTML = ''; // Clear existing items
 
         if (playerData.items && playerData.items.length > 0) {
@@ -37,17 +62,27 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             inventorySlots.innerHTML = '<p>Your inventory is empty.</p>';
         }
-    }
+    }*/
 
     // Click on the rocks
     rocksEl.addEventListener('click', () => {
-        if (hasKey || itemCollected) return;
+        if (checkedRock || itemCollected) return;
 
-        hasKey = true;
+        checkedRock = true;
         keyEl.classList.remove('hidden');
         rocksEl.style.opacity = '0.5'; // Make it look used
         rocksEl.style.cursor = 'default';
         messageEl.textContent = "You found a key under the rocks!";
+        
+    });
+
+    keyEl.addEventListener('click', () => {
+        itemSlot.classList.add('inventory-slot');
+        itemSlot.textContent = keyEl.textContent; // Placeholder icon
+        itemSlot.title = keyEl.title; // Show item name on hover
+        inventorySlots.appendChild(itemSlot);
+        hasKey = true;
+        keyEl.classList.add('hidden');
     });
 
     // Click on the chest
@@ -56,9 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (hasKey) {
             chestOpened = true;
-            boostItemEl.classList.remove('hidden');
             chestEl.textContent = '📖'; // Change to an open chest emoji
             keyEl.classList.add('hidden'); // Key is used
+            boostItemEl.classList.remove('hidden');
             messageEl.textContent = "You unlocked the chest and found a strange glowing orb!";
         } else {
             messageEl.textContent = "It's locked. You'll need to find a key.";
@@ -101,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
         messageEl.textContent = "You collected the Glowing Orb of Power! You feel slightly stronger.";
         returnButton.classList.remove('hidden');
         // Update the inventory display after collecting the item
-        updateInventoryDisplay();
+        //updateInventoryDisplay();
     });
 
-    updateInventoryDisplay(); // Initial display on page load
+    //updateInventoryDisplay(); // Initial display on page load
 });
