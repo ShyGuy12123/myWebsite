@@ -28,20 +28,18 @@ function getWeightedRandom(pool) {
     }
 }
 
-// --- GAME SETUP ---
-const player = {
-    name: 'Hero',
-    maxHp: 25,
-    currentHp: 25,
-    attackPower: 3,
-    currentXp: 0,
-    maxXp: 10,
-    level: 1,
-};
+// --- DATA LOADING ---
+if (typeof loadPlayerData !== 'function' || typeof gameData === 'undefined') {
+    console.error('data.js is not loaded correctly.');
+    document.body.innerHTML = '<h1>Error: Game data could not be loaded.</h1>';
+} else {
+    loadPlayerData();
+}
 
 // A central place for all enemy stats and details
+// Note: In a larger game, this might live in data.js
 const enemyTemplates = {
-    'Forest Slime': { name: 'Slime', maxHp: 10, attackPower: 5, cssClass: 'slime' },
+    'Forest Slime': { name: 'Slime', maxHp: 10, attackPower: 2, cssClass: 'slime' },
     'Slime': { name: 'Slime', maxHp: 50, attackPower: 5, cssClass: 'slime' },
     'Goblin': { name: 'Goblin', maxHp: 70, attackPower: 8, cssClass: 'goblin' },
     'Giant Crab': { name: 'Giant Crab', maxHp: 80, attackPower: 12, cssClass: 'crab' },
@@ -74,6 +72,7 @@ let currentEnemy = {};
 let enemiesDefeated = 0;
 
 // --- DOM ELEMENTS ---
+const playerName = document.getElementById('player-name');
 const playerHpText = document.getElementById('player-hp-text');
 const playerHealthBar = document.getElementById('player-health-bar');
 const playerXpText = document.getElementById('player-xp-text');
@@ -96,20 +95,56 @@ function logMessage(message) {
     messageLog.prepend(newMessage); // Add new messages to the top
 }
 
+function calculateXpForNextLevel(level) {
+    return Math.floor(9 + Math.pow(level, 1.5));
+}
+
 // Function to update the UI
 function updateUI() {
+    // Update player name and level
+    playerName.textContent = `Lvl ${playerData.level} Hero`;
+
     // Update player HP
-    playerHpText.textContent = `${player.currentHp} / ${player.maxHp}`;
-    playerHealthBar.style.width = `${(player.currentHp / player.maxHp) * 100}%`;
+    playerHpText.textContent = `${playerData.hp} / ${playerData.maxHp} HP`;
+    playerHealthBar.style.width = `${(playerData.hp / playerData.maxHp) * 100}%`;
 
     // Update player XP
-    playerXpText.textContent = `${player.currentXp} / ${player.maxXp} XP`;
-    playerXpBar.style.width = `${(player.currentXp / player.maxXp) * 100}%`;
+    const xpForNextLevel = calculateXpForNextLevel(playerData.level);
+    playerXpText.textContent = `${playerData.xp} / ${playerData.maxXp} XP`;
+    playerXpBar.style.width = `${(playerData.xp / playerData.maxXp) * 100}%`;
 
     // Update enemy HP
-    enemyNameElement.textContent = currentEnemy.name;
-    enemyHpText.textContent = `${currentEnemy.currentHp} / ${currentEnemy.maxHp}`;
-    enemyHealthBar.style.width = `${(currentEnemy.currentHp / currentEnemy.maxHp) * 100}%`;
+    if (currentEnemy && currentEnemy.name) {
+        enemyNameElement.textContent = currentEnemy.name;
+        enemyHpText.textContent = `${currentEnemy.currentHp} / ${currentEnemy.maxHp} HP`;
+        enemyHealthBar.style.width = `${(currentEnemy.currentHp / currentEnemy.maxHp) * 100}%`;
+        enemyCharacterElement.style.display = ''; // Show the enemy element
+    } else {
+        // Hide enemy details if there is no enemy
+        enemyCharacterElement.style.display = 'none';
+    }
+}
+
+function handleLevelUp() {
+    // Use a while loop in case the player gains enough XP for multiple levels at once
+    while (playerData.xp >= playerData.maxXp) {
+        playerData.xp -= playerData.maxXp;
+        playerData.level += 1;
+        const hpIncrease = Math.round(randomInRange(1, 2));
+        const attackIncrease = Math.round(randomInRange(1, 2));
+        playerData.maxHp += hpIncrease;
+        playerData.attackPower += attackIncrease;
+        playerData.hp += hpIncrease; // Full heal on level up
+
+        logMessage(`--------------------------------------------------`);
+        logMessage(`You leveled up! You are now level ${playerData.level}!`);
+        logMessage(`Max HP increased by ${hpIncrease}. You are fully healed.`);
+        logMessage(`Attack Power increased by ${attackIncrease}.`);
+        logMessage(`--------------------------------------------------`);
+
+        // Get the XP requirement for the *new* level
+        playerData.maxXp = calculateXpForNextLevel(playerData.level);
+    }
 }
 
 function disableButtons() {
@@ -130,27 +165,12 @@ function endOfTurn() {
 
         // --- GAIN EXPERIENCE ---
         const xpGained = Math.round(randomInRange(0.5, 1) * currentEnemy.maxHp) + 1;
-        player.currentXp += xpGained;
+        playerData.xp += xpGained;
 
         logMessage(`You gained ${xpGained} experience points.`);
 
         // --- LEVEL UP CHECK ---
-        while (player.currentXp >= player.maxXp) {
-            player.currentXp -= player.maxXp;
-            let hpIncrease = Math.round(randomInRange(0.5, 1) * 2)
-            player.level += 1;
-            player.maxHp += hpIncrease;
-            player.currentHp += hpIncrease;
-            player.attackPower += Math.round(randomInRange(0.5, 1) * 2);
-
-            player.maxXp += Math.round(player.level * 0.5);
-            logMessage(`--------------------------------------------------`);
-            logMessage(`Your Attack Power is now ${player.attackPower}.`);
-            logMessage(`Your HP is now ${player.maxHp}.`);
-            logMessage(`--------------------------------------------------`);
-            logMessage(`You leveled up! You are now level ${player.level}.`);
-            logMessage(`--------------------------------------------------`);
-        }
+        handleLevelUp();
 
         updateUI();
 
@@ -164,6 +184,7 @@ function endOfTurn() {
             // Location cleared!
             logMessage(locationInfo.clearedMessage);
             logMessage('Returning to the map...');
+            savePlayerData(); // Save progress before leaving
             disableButtons();
             setTimeout(() => {
                 window.location.href = `cleared.html?location=${gameLocation}`;
@@ -171,6 +192,7 @@ function endOfTurn() {
         } else {
             // Spawn the next enemy after a delay
             logMessage('A new challenger approaches...');
+            savePlayerData(); // Save progress between enemies
             setTimeout(spawnEnemy, 2000);
         }
 
@@ -187,7 +209,7 @@ function playerAttack() {
     disableButtons();
 
     // Calculate damage with a bit of randomness
-    const damage = Math.floor(randomInRange(0.75, 1.25) * player.attackPower) + 1;
+    const damage = Math.floor(randomInRange(0.75, 1.25) * playerData.attackPower) + 1;
     currentEnemy.currentHp = Math.max(0, currentEnemy.currentHp - damage);
     logMessage(`You attack the ${currentEnemy.name} for ${damage} damage.`);
     updateUI();
@@ -196,8 +218,8 @@ function playerAttack() {
 
 function playerHeal() {
     disableButtons();
-    const heal = Math.floor(randomInRange(0.75, 1.25) * player.attackPower) + 1;
-    player.currentHp = Math.min(player.maxHp, player.currentHp + heal);
+    const heal = Math.floor(randomInRange(0.75, 1.25) * playerData.attackPower) + 1;
+    playerData.hp = Math.min(playerData.maxHp, playerData.hp + heal);
     logMessage(`You heal yourself for ${heal} HP.`);
     updateUI();
     endOfTurn();
@@ -208,13 +230,18 @@ function playerHeal() {
 // Function to handle an enemy's attack
 function enemyAttack() {
     const damage = Math.floor(randomInRange(0.75, 1.25) * currentEnemy.attackPower) + 1;
-    player.currentHp = Math.max(0, player.currentHp - damage);
+    playerData.hp = Math.max(0, playerData.hp - damage);
     logMessage(`The ${currentEnemy.name} attacks you for ${damage} damage.`);
     updateUI();
 
-    if (player.currentHp <= 0) {
-        logMessage('You have been defeated... Game Over.');
-        // The button is already disabled from the player's turn.
+    if (playerData.hp <= 0) {
+        logMessage('You have been defeated... Returning to the map.');
+        disableButtons();
+        playerData.hp = playerData.maxHp; // Restore HP for the next attempt
+        savePlayerData();
+        setTimeout(() => {
+            window.location.href = '../game.html';
+        }, 3000);
     } else {
         // It's the player's turn again, so re-enable the button.
         enableButtons();
@@ -257,7 +284,8 @@ healButton.addEventListener('click', () => {
 
 // Set the initial message based on the location
 
-logMessage(`You enter the ${gameLocation}...`)
+logMessage(`You enter the ${gameLocation}...`);
+updateUI(); // Initial UI update for player stats before the first enemy appears
 
 // Spawn the first enemy for this location
 spawnEnemy();

@@ -3,14 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area Cleared!</title>
+    <title>A Hidden Cache</title>
     <link rel="stylesheet" href="rpg.css">
+    <style>
+        /* It's best to move these styles to rpg.css */
+        #puzzle-scene {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background-color: #5c4033; /* A dirt/cave color */
+            border: 2px solid #3b2a20;
+            margin: 20px auto;
+            background-size: cover;
+        }
+
+        .puzzle-item {
+            position: absolute;
+            cursor: pointer;
+            width: 80px;
+            height: 80px;
+            /* Using simple colors/emojis for demonstration. Use images for a real game. */
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            transition: transform 0.2s, filter 0.2s;
+        }
+        .puzzle-item:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        #rocks { bottom: 20px; left: 50px; }
+        #chest { bottom: 20px; right: 50px; }
+        #key { bottom: 30px; left: 60px; width: 60px; height: 30px; }
+        #boost-item { bottom: 40px; right: 65px; width: 50px; height: 50px; }
+
+        #boost-item:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px #00FFFF);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div id="game-container" class="cleared-container">
-        <h1 id="cleared-title">Location Cleared!</h1>
-        <p id="cleared-message">You have defeated all the enemies.</p>
-        <a href="../game.html" class="action-button">Return to World Map</a>
+        <h1 id="cleared-title">A Hidden Cache</h1>
+        <p id="puzzle-message">You sense something valuable is hidden here. Look around.</p>
+        
+        <div id="puzzle-scene">
+            <div id="rocks" class="puzzle-item" title="A pile of loose rocks">🪨</div>
+            <div id="chest" class="puzzle-item" title="A sturdy-looking chest">📦</div>
+            <div id="key" class="puzzle-item hidden" title="A small, shiny key">🔑</div>
+            <div id="boost-item" class="puzzle-item hidden" title="A mysterious power-up!">✨</div>
+        </div>
+
+        <div id="inventory">
+            <h2>Inventory</h2>
+            <div id="inventory-slots"></div>
+        </div>
+
+        <a href="../game.html" class="action-button hidden" id="return-button">Return to World Map</a>
     </div>
     <!-- Link to the shared data file -->
     <script src="../data.js"></script>
