@@ -135,13 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (locationName === 'forest') {
                 messageEl.textContent = "You collected the Glowing Orb of Health! You feel more fortified by 50%!";
-                playerData.hp *= 1.5;
-                playerData.maxHp *= 1.5;
+                playerData.hp = Math.floor(playerData.hp * 1.5);
+                playerData.maxHp = Math.floor(playerData.maxHp * 1.5);
                 playerData.hpMultiplier = 1.5;
                 playerData.items.push('Glowing Orb of Health');
             }  else if (locationName === 'beach') {
                 messageEl.textContent = "You collected the Glowing Orb of Attack! You feel more powerful by 50%!";
-                playerData.attackPower *= 1.5;
+                playerData.attackPower = Math.floor(playerData.attackPower * 1.5);
                 playerData.attackMultiplier = 1.5;
                 playerData.items.push('Glowing Orb of Power');
             } else if (locationName === 'mountain') {

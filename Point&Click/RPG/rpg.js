@@ -39,24 +39,60 @@ if (typeof loadPlayerData !== 'function' || typeof gameData === 'undefined') {
 // A central place for all enemy stats and details
 // Note: In a larger game, this might live in data.js
 const enemyTemplates = {
-    'Forest Slime': { name: 'Slime', maxHp: 10, attackPower: 2, cssClass: 'slime' },
-    'Slime': { name: 'Slime', maxHp: 50, attackPower: 5, cssClass: 'slime' },
-    'Goblin': { name: 'Goblin', maxHp: 70, attackPower: 8, cssClass: 'goblin' },
+    'Easy Slime': { name: 'Slime', maxHp: 10, attackPower: 2, cssClass: 'slime' },
+    'Slime': { name: 'Slime', maxHp: 20, attackPower: 5, cssClass: 'slime' },
+    'Hard Slime': { name: 'Slime', maxHp: 50, attackPower: 10, cssClass: 'slime' },
+
+    'Easy Spider': { name: 'Spider', maxHp: 8, attackPower: 2, cssClass: 'spider' },
+    'Spider': { name: 'Spider', maxHp: 25, attackPower: 4, cssClass: 'spider' },
+    'Hard Spider': { name: 'Spider', maxHp: 30, attackPower: 8, cssClass: 'spider' },
+
+    'Easy Goblin': { name: 'Goblin', maxHp: 20, attackPower: 4, cssClass: 'goblin' },
+    'Goblin': { name: 'Goblin', maxHp: 30, attackPower: 8, cssClass: 'goblin' },
+    'Hard Goblin': { name: 'Goblin', maxHp: 60, attackPower: 16, cssClass: 'goblin' },
+
+    'Easy Giant Crab': { name: 'Giant Crab', maxHp: 50, attackPower: 8, cssClass: 'crab' },
     'Giant Crab': { name: 'Giant Crab', maxHp: 80, attackPower: 12, cssClass: 'crab' },
-    'Stone Golem': { name: 'Stone Golem', maxHp: 120, attackPower: 10, cssClass: 'golem' }
+    'Hard Giant Crab': { name: 'Giant Crab', maxHp: 120, attackPower: 18, cssClass: 'crab' },
+
+    'Easy Stone Golem': { name: 'Stone Golem', maxHp: 100, attackPower: 10, cssClass: 'golem' },
+    'Stone Golem': { name: 'Stone Golem', maxHp: 120, attackPower: 14, cssClass: 'golem' },
+    'Hard Stone Golem': { name: 'Stone Golem', maxHp: 180, attackPower: 20, cssClass: 'golem' }
 };
 
 // Defines which enemies can spawn in each location and their frequency (weight)
 const locationEnemyPools = {
     'forest': [
-        { type: 'Goblin', weight: 0 }, // 70% chance
-        { type: 'Forest Slime', weight: 100 }   // 30% chance
+        { type: 'Easy Goblin', weight: 31 },
+        { type: 'Easy Slime', weight: 31 },
+        { type: 'Easy Spider', weight: 32 },
+
+        { type: 'Goblin', weight: 2 },
+        { type: 'Slime', weight: 2 },
+        { type: 'Spider', weight: 2 },
+
+        // { type: 'Hard Goblin', weight: 5 },
+        // { type: 'Hard Slime', weight: 2 },
+        // { type: 'Hard Spider', weight: 3 }
     ],
     'beach': [
         { type: 'Giant Crab', weight: 80 },
         { type: 'Slime', weight: 20 }
     ],
     'mountain': [
+        { type: 'Stone Golem', weight: 100 } // Always a Stone Golem
+    ],
+    'plains': [
+        { type: 'Easy Goblin', weight: 31 },
+        { type: 'Easy Slime', weight: 31 },
+
+        { type: 'Goblin', weight: 2 },
+        { type: 'Slime', weight: 2 }, // Always a Stone Golem
+    ],
+    'island': [
+        { type: 'Stone Golem', weight: 100 } // Always a Stone Golem
+    ],
+    'volcano': [
         { type: 'Stone Golem', weight: 100 } // Always a Stone Golem
     ],
     'default': [ // A fallback for when no location is specified
@@ -67,6 +103,32 @@ const locationEnemyPools = {
 // --- INITIALIZATION ---
 const urlParams = new URLSearchParams(window.location.search);
 const gameLocation = urlParams.get('location') || 'default'; // Use 'default' if no location is provided
+
+const locationInfo = gameData.locations[gameLocation] || gameData.locations.default;
+if (gameLocation === 'forest') {
+    document.getElementById("title-message").textContent = "The Dark Forest";
+    document.getElementById("battle-scene").style.backgroundColor = "#082e12";
+} else if (gameLocation === 'plains') {
+    document.getElementById("title-message").textContent = "The Great Plains";
+    document.getElementById("battle-scene").style.backgroundColor = "#a8e386";
+} else if (gameLocation === 'beach') {
+    document.getElementById("title-message").textContent = "The Beach";
+    document.getElementById("battle-scene").style.backgroundColor = "#dbc795";
+} else if (gameLocation === 'island') {
+    document.getElementById("title-message").textContent = "The Island";
+    document.getElementById("battle-scene").style.backgroundColor = "#8fb0c2";
+} else if (gameLocation === 'mountain') {
+    document.getElementById("title-message").textContent = "The Mountains";
+    document.getElementById("battle-scene").style.backgroundColor = "#4e5559";
+} else if (gameLocation === 'volcano') {
+    document.getElementById("title-message").textContent = "The Volcano";
+    document.getElementById("battle-scene").style.backgroundColor = "#543837";
+} else {
+    document.getElementById("title-message").textContent = "The Unknown";
+    document.getElementById("battle-scene").style.backgroundColor = "#707070";
+}
+
+let maxEnemies = (Math.floor(locationInfo.maxEnemies * randomInRange(0.75, 1.25)));
 
 let currentEnemy = {};
 let enemiesDefeated = 0;
@@ -110,7 +172,6 @@ function updateUI() {
     playerHealthBar.style.width = `${(playerData.hp / playerData.maxHp) * 100}%`;
 
     // Update player XP
-    const xpForNextLevel = calculateXpForNextLevel(playerData.level);
     playerXpText.textContent = `${playerData.xp} / ${playerData.maxXp} XP`;
     playerXpBar.style.width = `${(playerData.xp / playerData.maxXp) * 100}%`;
 
@@ -177,8 +238,6 @@ function endOfTurn() {
         updateUI();
 
         // --- VICTORY CHECK ---
-        const locationInfo = gameData.locations[gameLocation] || gameData.locations.default;
-        const maxEnemies = locationInfo.maxEnemies;
 
         logMessage(`Enemies defeated: ${enemiesDefeated} / ${maxEnemies}`);
 
@@ -267,6 +326,10 @@ function spawnEnemy() {
 
     // Add the new class for the current enemy
     enemyCharacterElement.classList.add(currentEnemy.cssClass);
+
+    currentEnemy.maxHp = Math.floor(currentEnemy.maxHp * randomInRange(0.75, 1.25));
+    currentEnemy.currentHp = currentEnemy.maxHp;
+    currentEnemy.attackPower = Math.floor(currentEnemy.attackPower * randomInRange(0.75, 1.25));
 
     logMessage(`A wild ${currentEnemy.name} appears!`);
     updateUI();

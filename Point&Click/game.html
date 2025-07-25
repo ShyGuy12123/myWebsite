@@ -8,16 +8,22 @@
 </head>
 <body>
     <h1>Explore the World</h1>
-    <div id="game-world">
-        <a href="RPG/rpg.html?location=forest" id="forest" class="location" title="A dark, spooky forest.">Dark Forest</a>
-        <a href="RPG/rpg.html?location=beach" id="beach" class="location" title="A sunny, sandy beach.">Beach</a>
-        <a href="RPG/rpg.html?location=mountain" id="mountain" class="location" title="A tall, rocky mountain.">Mountain</a>
+    <div id="game-world"> <!-- This is the viewport -->
+        <div id="map-content"> <!-- This is the draggable map layer -->
+            <a href="RPG/rpg.html?location=forest" id="forest" class="location" title="A dark, spooky forest.">Dark Forest</a>
+            <a href="RPG/rpg.html?location=plains" id="plains" class="location" title="Sprawling plains.">Great Plains Outpost</a>
+            <a href="RPG/rpg.html?location=beach" id="beach" class="location" title="A sunny, sandy beach.">Beach</a>
+            <a href="RPG/rpg.html?location=island" id="island" class="location" title="A small secluded island.">Island Outpost</a>
+            <a href="RPG/rpg.html?location=mountain" id="mountain" class="location" title="A tall, rocky mountain.">Mountain</a>
+            <a href="RPG/rpg.html?location=volcano" id="volcano" class="location" title="A firey end to any adventurer's journey.">Volcano</a>
+        </div>
     </div>
     <div id="inventory">
         <h2>Inventory</h2>
         <div id="inventory-slots"></div>
     </div>
     <!-- <p id="status-message">You are looking at a map. Where do you want to go?</p> -->
+        <button onclick = "resetData()" > Reset Data </button>
 
     <!-- Shared data and save/load functions -->
     <script src="data.js"></script>

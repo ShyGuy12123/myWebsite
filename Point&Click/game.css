@@ -20,18 +20,41 @@ h1 {
     /* SaddleBrown */
     margin: 20px auto;
     /* border-radius: 10px; */
+    cursor: grab;
+    user-select: none; /* Prevent text selection while dragging */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     /* Ensures gradients stay within the border */
+    /* The viewport now has a simple background, the map is on map-content */
+    background-color: #222;
+}
+
+#game-world.active {
+    cursor: grabbing;
+}
+
+#map-content {
+    position: absolute;
+    /* Make the map larger than the viewport */
+    width: 150%; /* 1200px */
+    height: 150%; /* 900px */
+    /* The 'transform' property will be set by JavaScript */
 
     /* A multi-layered background to create a stylized map */
     background-color: #a5d6a7;
     /* Base land color (light green) */
     background-image:
         /* Layer 3 (Top): Mountain Range - a greyish oval shape */
-        radial-gradient(ellipse at 450px 250px, #B0BEC5 40px, #90A4AE 100px, transparent 150px),
+        radial-gradient(ellipse at 800px 250px, #B0BEC5 40px, #90A4AE 100px, transparent 0px),
+
+        radial-gradient(circle at 97% 5%, #c98a6f 40px, #b42b2b 80px, transparent 0px),
+        radial-gradient(circle at 95% 10%, #B0BEC5 40px, #90A4AE 100px, transparent 0px),
+
+        radial-gradient(ellipse at 450px 350px,  #557527 40px, #80a74e 150px, transparent 0px),
         /* Layer 2: Forest Area - a dark green circle */
         radial-gradient(circle at 180px 130px, #388E3C 60px, #4CAF50 120px, transparent 121px),
+
+        radial-gradient(circle at 850px 775px, #c7c67d 40px, #c7b847 80px, transparent 0px),
         /* Layer 1 (Bottom): Ocean and Beach */
         linear-gradient(to top, #4FC3F7 25%, #F5EAAA 35%, transparent 36%);
 }
@@ -85,9 +108,22 @@ h1 {
     /* Fallback color */
 }
 
+#plains {
+    top: 300px;
+    left: 400px;
+    display: none;
+}
+
+#plains::before {
+    /* background-image: url('path/to/your/forest-icon.png'); */
+    background-color: #93af4c;
+    /* Fallback color */
+}
+
 #beach {
-    top: 420px;
+    top: 520px;
     left: 580px;
+    display: none;
 }
 
 #beach::before {
@@ -96,9 +132,23 @@ h1 {
     /* Fallback color */
 }
 
+#island {
+    top: 720px;
+    left: 780px;
+    display: none;
+}
+
+#island::before {
+    /* background-image: url('path/to/your/beach-icon.png'); */
+    background-color: #d39f1d;
+    /* Fallback color */
+}
+
+
 #mountain {
     top: 180px;
-    left: 380px;
+    left: 750px;
+    display: none;
 }
 
 #mountain::before {
@@ -106,6 +156,19 @@ h1 {
     background-color: #607D8B;
     /* Fallback color */
 }
+
+#volcano {
+    top: 5%;
+    left: 90%;
+    display: none;
+}
+
+#volcano::before {
+    /* background-image: url('path/to/your/mountain-icon.png'); */
+    background-color: #b04646;
+    /* Fallback color */
+}
+
 
 #inventory {
     display: block;

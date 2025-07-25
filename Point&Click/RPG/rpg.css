@@ -77,6 +77,10 @@ body {
     background-color: #2E8B57; /* SeaGreen, a nice goblin green */
 }
 
+#enemy-character.spider::before {
+    background-color: #0a4d27; /* SeaGreen, a nice goblin green */
+}
+
 .character-name {
     font-weight: bold;
     margin-bottom: 5px;
