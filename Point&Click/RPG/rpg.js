@@ -39,6 +39,9 @@ if (typeof loadPlayerData !== 'function' || typeof gameData === 'undefined') {
 // A central place for all enemy stats and details
 // Note: In a larger game, this might live in data.js
 const enemyTemplates = {
+
+    // The Natural Enemies
+
     'Easy Slime': { name: 'Slime', maxHp: 10, attackPower: 2, cssClass: 'slime' },
     'Slime': { name: 'Slime', maxHp: 20, attackPower: 5, cssClass: 'slime' },
     'Hard Slime': { name: 'Slime', maxHp: 50, attackPower: 10, cssClass: 'slime' },
@@ -57,7 +60,33 @@ const enemyTemplates = {
 
     'Easy Stone Golem': { name: 'Stone Golem', maxHp: 100, attackPower: 10, cssClass: 'golem' },
     'Stone Golem': { name: 'Stone Golem', maxHp: 120, attackPower: 14, cssClass: 'golem' },
-    'Hard Stone Golem': { name: 'Stone Golem', maxHp: 180, attackPower: 20, cssClass: 'golem' }
+    'Hard Stone Golem': { name: 'Stone Golem', maxHp: 180, attackPower: 20, cssClass: 'golem' },
+
+    // The Evil Organization
+
+    'Easy Scout': { name: 'Scout', maxHp: 25, attackPower: 10, cssClass: 'scout' },
+    'Scout': { name: 'Scout', maxHp: 40, attackPower: 16, cssClass: 'scout' },
+    'Hard Scout': { name: 'Scout', maxHp: 60, attackPower: 24, cssClass: 'scout' },
+
+    'Easy Mechanic': { name: 'Mechanic', maxHp: 50, attackPower: 20, cssClass: 'mechanic' },
+    'Mechanic': { name: 'Mechanic', maxHp: 70, attackPower: 25, cssClass: 'mechanic' },
+    'Hard Mechanic': { name: 'Mechanic', maxHp: 90, attackPower: 30, cssClass: 'mechanic' },
+
+    'Easy Grunt': { name: 'Grunt', maxHp: 60, attackPower: 24, cssClass: 'grunt' },
+    'Grunt': { name: 'Grunt', maxHp: 90, attackPower: 30, cssClass: 'grunt' },
+    'Hard Grunt': { name: 'Grunt', maxHp: 120, attackPower: 50, cssClass: 'grunt' },
+
+    'Easy Ranger': { name: 'Ranger', maxHp: 110, attackPower: 60, cssClass: 'ranger' },
+    'Ranger': { name: 'Ranger', maxHp: 160, attackPower: 100, cssClass: 'ranger' },
+    'Hard Ranger': { name: 'Ranger', maxHp: 210, attackPower: 150, cssClass: 'ranger' },
+
+    // Scripted Enemies
+
+    'Operation Manager': { name: 'Operation Manager', maxHp: 120, attackPower: 80, cssClass: 'om' },
+
+    'Regional Leader': { name: 'Regional Leader', maxHp: 200, attackPower: 140, cssClass: 'rl' },
+
+    'The Boss': { name: 'The Boss', maxHp: 500, attackPower: 500, cssClass: 'boss' },
 };
 
 // Defines which enemies can spawn in each location and their frequency (weight)
@@ -76,24 +105,93 @@ const locationEnemyPools = {
         // { type: 'Hard Spider', weight: 3 }
     ],
     'beach': [
-        { type: 'Giant Crab', weight: 80 },
-        { type: 'Slime', weight: 20 }
+        { type: 'Easy Giant Crab', weight: 20 },
+        { type: 'Easy Stone Golem', weight: 1 }, 
+
+        { type: 'Giant Crab', weight: 25 },
+        { type: 'Slime', weight: 10 }, 
+
+        { type: 'Hard Giant Crab', weight: 2 },
+        { type: 'Hard Slime', weight: 2 },
+
+        { type: 'Easy Scout', weight: 2 },
+        { type: 'Scout', weight: 7 },
+        { type: 'Hard Scout', weight: 10 },
+
+        { type: 'Easy Grunt', weight: 10 },
+        { type: 'Grunt', weight: 10 },
+
+        { type: 'Easy Ranger', weight: 1 },
     ],
     'mountain': [
-        { type: 'Stone Golem', weight: 100 } // Always a Stone Golem
+        { type: 'Easy Stone Golem', weight: 5 },
+
+        { type: 'Stone Golem', weight: 15 },
+
+        { type: 'Hard Stone Golem', weight: 30 }, 
+
+        { type: 'Hard Scout', weight: 10 },
+
+        { type: 'Grunt', weight: 5 },
+        { type: 'Hard Grunt', weight: 15 },
+
+        { type: 'Mechanic', weight: 5 },
+        { type: 'Hard Mechanic', weight: 5 },
+
+        { type: 'Ranger', weight: 5 },
+        { type: 'Hard Ranger', weight: 5 },
     ],
     'plains': [
-        { type: 'Easy Goblin', weight: 31 },
-        { type: 'Easy Slime', weight: 31 },
+        { type: 'Easy Goblin', weight: 21 },
+        { type: 'Easy Slime', weight: 22 },
 
-        { type: 'Goblin', weight: 2 },
-        { type: 'Slime', weight: 2 }, // Always a Stone Golem
+        { type: 'Goblin', weight: 20 },
+        { type: 'Slime', weight: 20 },
+        
+        { type: 'Hard Goblin', weight: 1 },
+        { type: 'Hard Slime', weight: 1 },
+        
+        { type: 'Easy Scout', weight: 10 },
+        { type: 'Scout', weight: 5 },
     ],
     'island': [
-        { type: 'Stone Golem', weight: 100 } // Always a Stone Golem
+        { type: 'Easy Giant Crab', weight: 17 },
+        { type: 'Easy Stone Golem', weight: 1 }, 
+
+        { type: 'Giant Crab', weight: 16 },
+        { type: 'Slime', weight: 5 }, 
+
+        { type: 'Hard Giant Crab', weight: 5 },
+        { type: 'Hard Slime', weight: 3 },
+        { type: 'Hard Goblin', weight: 18 }, 
+
+        { type: 'Hard Scout', weight: 5 },
+
+        { type: 'Easy Grunt', weight: 5 },
+        { type: 'Grunt', weight: 5 },
+        { type: 'Hard Grunt', weight: 10 },
+
+        { type: 'Easy Mechanic', weight: 5 },
+
+        { type: 'Easy Ranger', weight: 4 },
+        { type: 'Ranger', weight: 1 },
     ],
     'volcano': [
-        { type: 'Stone Golem', weight: 100 } // Always a Stone Golem
+
+        { type: 'Stone Golem', weight: 10 },
+
+        { type: 'Hard Stone Golem', weight: 20 }, 
+
+        { type: 'Hard Scout', weight: 5 },
+
+        { type: 'Grunt', weight: 2 },
+        { type: 'Hard Grunt', weight: 25 },
+
+        { type: 'Mechanic', weight: 1 },
+        { type: 'Hard Mechanic', weight: 10 },
+
+        { type: 'Ranger', weight: 2 },
+        { type: 'Hard Ranger', weight: 25 },
     ],
     'default': [ // A fallback for when no location is specified
         { type: 'Slime', weight: 100 }
@@ -105,30 +203,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameLocation = urlParams.get('location') || 'default'; // Use 'default' if no location is provided
 
 const locationInfo = gameData.locations[gameLocation] || gameData.locations.default;
-if (gameLocation === 'forest') {
-    document.getElementById("title-message").textContent = "The Dark Forest";
-    document.getElementById("battle-scene").style.backgroundColor = "#082e12";
-} else if (gameLocation === 'plains') {
-    document.getElementById("title-message").textContent = "The Great Plains";
-    document.getElementById("battle-scene").style.backgroundColor = "#a8e386";
-} else if (gameLocation === 'beach') {
-    document.getElementById("title-message").textContent = "The Beach";
-    document.getElementById("battle-scene").style.backgroundColor = "#dbc795";
-} else if (gameLocation === 'island') {
-    document.getElementById("title-message").textContent = "The Island";
-    document.getElementById("battle-scene").style.backgroundColor = "#8fb0c2";
-} else if (gameLocation === 'mountain') {
-    document.getElementById("title-message").textContent = "The Mountains";
-    document.getElementById("battle-scene").style.backgroundColor = "#4e5559";
-} else if (gameLocation === 'volcano') {
-    document.getElementById("title-message").textContent = "The Volcano";
-    document.getElementById("battle-scene").style.backgroundColor = "#543837";
-} else {
-    document.getElementById("title-message").textContent = "The Unknown";
-    document.getElementById("battle-scene").style.backgroundColor = "#707070";
-}
+document.getElementById("title-message").textContent = locationInfo.name;
+document.getElementById("battle-scene").style.backgroundColor = locationInfo.backgroundColor;
 
-let maxEnemies = (Math.floor(locationInfo.maxEnemies * randomInRange(0.75, 1.25)));
+let maxEnemies = (Math.floor(locationInfo.maxEnemies * randomInRange(0.75, 1.25))) + 1;
 
 let currentEnemy = {};
 let enemiesDefeated = 0;
@@ -192,8 +270,8 @@ function handleLevelUp() {
     while (playerData.xp >= playerData.maxXp) {
         playerData.xp -= playerData.maxXp;
         playerData.level += 1;
-        const hpIncrease = Math.round((randomInRange(1, 4) * (playerData.level^0.5) / 8) * playerData.hpMultiplier);
-        const attackIncrease = Math.round((randomInRange(1, 4) * (playerData.level^0.5) / 8)  * playerData.attackMultiplier);
+        const hpIncrease = Math.round((randomInRange(1, 4) * ((playerData.level^0.5) / 20) +1) * playerData.hpMultiplier);
+        const attackIncrease = Math.round((randomInRange(1, 4) * ((playerData.level^0.5) / 20) +1) * playerData.attackMultiplier);
         playerData.maxHp += hpIncrease;
         playerData.attackPower += attackIncrease;
         playerData.hp += hpIncrease; // Full heal on level up
@@ -227,7 +305,7 @@ function endOfTurn() {
         enemiesDefeated++;
 
         // --- GAIN EXPERIENCE ---
-        const xpGained = Math.round((randomInRange(0.5, 1) * currentEnemy.maxHp) * playerData.xpMultiplier) + 1;
+        const xpGained = Math.round(((randomInRange(0.5, 1) * currentEnemy.maxHp) / 2) * playerData.xpMultiplier) + 1;
         playerData.xp += xpGained;
 
         logMessage(`You gained ${xpGained} experience points.`);
@@ -331,7 +409,7 @@ function spawnEnemy() {
     currentEnemy.currentHp = currentEnemy.maxHp;
     currentEnemy.attackPower = Math.floor(currentEnemy.attackPower * randomInRange(0.75, 1.25));
 
-    logMessage(`A wild ${currentEnemy.name} appears!`);
+    logMessage(`A ${currentEnemy.name} appears!`);
     updateUI();
     enableButtons();
 }

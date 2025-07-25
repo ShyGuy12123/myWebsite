@@ -64,32 +64,56 @@ const gameData = {
             name: 'The Dark Forest',
             description: 'You have entered the dark forest. It is eerily quiet, and the ancient trees block out most of the sunlight.',
             image: '', // Add a URL like 'images/forest.jpg' to show a background image
-            backgroundColor: '#1B5E20', // Fallback color if no image is present
-            maxEnemies: 5,
-            clearedMessage: "You have cleared the forest of its menacing creatures!"
+            backgroundColor: '#082e12', // Fallback color if no image is present
+            maxEnemies: 10,
+            clearedMessage: "You have stumbled upon a clearing."
+        },
+        plains: {
+            name: 'The Great Plains',
+            description: 'You have entered the great plains. Its rolling fields reveal a monsterous structure in the distance.',
+            image: '', // Add a URL like 'images/forest.jpg' to show a background image
+            backgroundColor: '#78B857', // Fallback color if no image is present
+            maxEnemies: 20,
+            clearedMessage: "You have arrived at the structure."
         },
         beach: {
             name: 'Sun-Kissed Beach',
             description: 'You arrive at a beautiful beach. The sun is warm, and the waves are gently crashing on the shore.',
             image: '',
-            backgroundColor: '#0288D1',
-            maxEnemies: 4,
-            clearedMessage: "The beach is now safe for all to enjoy."
+            backgroundColor: '#dbc795',
+            maxEnemies: 25,
+            clearedMessage: "You have found a horrible operation taking place!"
+        },
+        island: {
+            name: 'The Mysterious Island',
+            description: 'You have set out to arrive at the island',
+            image: '', // Add a URL like 'images/forest.jpg' to show a background image
+            backgroundColor: '#8fb0c2', // Fallback color if no image is present
+            maxEnemies: 30,
+            clearedMessage: "You have arrived on the shore."
         },
         mountain: {
             name: 'The Tall Mountain',
             description: 'You begin to climb the steep mountain. The air is thin here, and the view from the craggy peaks is breathtaking.',
             image: '',
-            backgroundColor: '#455A64',
-            maxEnemies: 1,
-            clearedMessage: "The Stone Golem has been vanquished and the mountain path is clear."
+            backgroundColor: '#4e5559',
+            maxEnemies: 35,
+            clearedMessage: "Is something glittering in the rockbed? You go to check it out."
+        },
+        volcano: {
+            name: 'The Trecherous Volcano',
+            description: 'You have entered the dark forest. It is eerily quiet, and the ancient trees block out most of the sunlight.',
+            image: '', // Add a URL like 'images/forest.jpg' to show a background image
+            backgroundColor: '#543837', // Fallback color if no image is present
+            maxEnemies: 40,
+            clearedMessage: "You have found the final lair of the ORGANIZATION!"
         },
         default: {
             name: 'A Mysterious Area',
             description: '',
             image: '',
-            backgroundColor: '#333',
-            maxEnemies: 3,
+            backgroundColor: '#707070',
+            maxEnemies: 5,
             clearedMessage: "You've cleared the area."
         }
     }
