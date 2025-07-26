@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Hidden Grove</title>
+    <link rel="stylesheet" href="forest.css">
+</head>
+
+<body>
+    <div id="game-container" class="cleared-container">
+        <h1 id="cleared-title">A Hidden Grove</h1>
+        <p id="puzzle-message">You sense something valuable is hidden here. Look around.</p>
+
+        <div id="puzzle-scene">
+            <p>Only through life's end does rebirth bloom.</p>
+            <p>Touch what fades first, and what's left last.</p>
+            <div id="pedestal1" class="puzzle-item" title="A healthy sprout">🌱</div>
+            <div id="pedestal2" class="puzzle-item" title="A wilted flower">🌸</div>
+            <div id="pedestal3" class="puzzle-item" title="A rotting fruit">🍎</div>
+            <div id="pedestal4" class="puzzle-item" title="A pile of bones">☠️</div>
+            <div id="boost-item" class="puzzle-item hidden" title="A mysterious power-up!">✨</div>
+        </div>
+
+        <div id="inventory">
+            <h2>Inventory</h2>
+            <div id="inventory-slots"></div>
+        </div>
+
+        <a href="../rpg.html?location=forest&scripted=1" class="action-button hidden" id="return-button">Return to World Map</a>
+    </div>
+    <!-- Link to the shared data file -->
+    <script src="../../data.js"></script>
+    <!-- Script to customize this page's content -->
+    <script src="forest.js" defer></script>
+</body>
+
+</html>

@@ -66,7 +66,8 @@ const gameData = {
             image: '', // Add a URL like 'images/forest.jpg' to show a background image
             backgroundColor: '#082e12', // Fallback color if no image is present
             maxEnemies: 10,
-            clearedMessage: "You have stumbled upon a clearing."
+            clearedMessage: "You have stumbled upon a clearing.",
+            filePath: 'forest'
         },
         plains: {
             name: 'The Great Plains',
@@ -74,7 +75,8 @@ const gameData = {
             image: '', // Add a URL like 'images/forest.jpg' to show a background image
             backgroundColor: '#78B857', // Fallback color if no image is present
             maxEnemies: 20,
-            clearedMessage: "You have arrived at the structure."
+            clearedMessage: "You have arrived at the structure.",
+            filePath: 'plains'
         },
         beach: {
             name: 'Sun-Kissed Beach',
@@ -82,7 +84,8 @@ const gameData = {
             image: '',
             backgroundColor: '#dbc795',
             maxEnemies: 25,
-            clearedMessage: "You have found a horrible operation taking place!"
+            clearedMessage: "You have found a horrible operation taking place!",
+            filePath: 'beach'
         },
         island: {
             name: 'The Mysterious Island',
@@ -90,7 +93,8 @@ const gameData = {
             image: '', // Add a URL like 'images/forest.jpg' to show a background image
             backgroundColor: '#8fb0c2', // Fallback color if no image is present
             maxEnemies: 30,
-            clearedMessage: "You have arrived on the shore."
+            clearedMessage: "You have arrived on the shore.",
+            filePath: 'island'
         },
         mountain: {
             name: 'The Tall Mountain',
@@ -98,7 +102,8 @@ const gameData = {
             image: '',
             backgroundColor: '#4e5559',
             maxEnemies: 35,
-            clearedMessage: "Is something glittering in the rockbed? You go to check it out."
+            clearedMessage: "Is something glittering in the rockbed? You go to check it out.",
+            filePath: 'mountain'
         },
         volcano: {
             name: 'The Trecherous Volcano',
@@ -106,7 +111,8 @@ const gameData = {
             image: '', // Add a URL like 'images/forest.jpg' to show a background image
             backgroundColor: '#543837', // Fallback color if no image is present
             maxEnemies: 40,
-            clearedMessage: "You have found the final lair of the ORGANIZATION!"
+            clearedMessage: "You have found the final lair of the ORGANIZATION!",
+            filePath: 'volcano'
         },
         default: {
             name: 'A Mysterious Area',

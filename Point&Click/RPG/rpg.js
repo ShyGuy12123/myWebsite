@@ -82,7 +82,7 @@ const enemyTemplates = {
 
     // Scripted Enemies
 
-    'Operation Manager': { name: 'Operation Manager', maxHp: 120, attackPower: 80, cssClass: 'om' },
+    'Operation Manager': { name: 'Operation Manager', maxHp: 75, attackPower: 10, cssClass: 'om' },
 
     'Regional Leader': { name: 'Regional Leader', maxHp: 200, attackPower: 140, cssClass: 'rl' },
 
@@ -199,17 +199,7 @@ const locationEnemyPools = {
 };
 
 // --- INITIALIZATION ---
-const urlParams = new URLSearchParams(window.location.search);
-const gameLocation = urlParams.get('location') || 'default'; // Use 'default' if no location is provided
 
-const locationInfo = gameData.locations[gameLocation] || gameData.locations.default;
-document.getElementById("title-message").textContent = locationInfo.name;
-document.getElementById("battle-scene").style.backgroundColor = locationInfo.backgroundColor;
-
-let maxEnemies = (Math.floor(locationInfo.maxEnemies * randomInRange(0.75, 1.25))) + 1;
-
-let currentEnemy = {};
-let enemiesDefeated = 0;
 
 // --- DOM ELEMENTS ---
 const playerName = document.getElementById('player-name');
@@ -258,10 +248,10 @@ function updateUI() {
         enemyNameElement.textContent = currentEnemy.name;
         enemyHpText.textContent = `${currentEnemy.currentHp} / ${currentEnemy.maxHp} HP`;
         enemyHealthBar.style.width = `${(currentEnemy.currentHp / currentEnemy.maxHp) * 100}%`;
-        enemyCharacterElement.style.display = ''; // Show the enemy element
+        enemyCharacterElement.style.display = ``; // Show the enemy element
     } else {
         // Hide enemy details if there is no enemy
-        enemyCharacterElement.style.display = 'none';
+        enemyCharacterElement.style.display = `none`;
     }
 }
 
@@ -321,30 +311,56 @@ function endOfTurn() {
 
         if (enemiesDefeated >= maxEnemies) {
             // Location cleared!
-            logMessage(locationInfo.clearedMessage);
-            logMessage('Returning to the map...');
+            
+            // logMessage(`Returning to the map...`);
             savePlayerData(); // Save progress before leaving
             disableButtons();
             setTimeout(() => {
-                window.location.href = `cleared.html?location=${gameLocation}`;
+                 if (gameLocation == "forest") {
+                    logMessage(locationInfo.clearedMessage);
+                    if (returnUrl != "") {
+                        if (gainItem == true) {
+                            playerData.clearedLocations.push("forest");
+
+                            playerData.hp = Math.floor(playerData.hp * 1.5);
+                            playerData.maxHp = Math.floor(playerData.maxHp * 1.5);
+                            playerData.hpMultiplier = 1.5;
+                            playerData.items.push('Glowing Orb of Health');
+                
+                            savePlayerData();
+
+                            setTimeout(() => {
+                                logMessage('The GLOWING ORB began to pulse! You could feel it increasing your hp by 50%!');
+                            }, 4000);
+                            console.log('Player data updated:', playerData);
+                        }
+                        window.location.href = returnUrl;
+                    } else {
+                        window.location.href = `${locationInfo.filePath}/${gameLocation}.html`;
+                    }
+                    
+                } else {
+                    window.location.href = `cleared.html?location=` + gameLocation;
+                }
+                
             }, 4000); // 4-second delay before redirecting
         } else {
             // Spawn the next enemy after a delay
-            logMessage('A new challenger approaches...');
+            logMessage(`A new challenger approaches...`);
             savePlayerData(); // Save progress between enemies
             setTimeout(spawnEnemy, 2000);
         }
 
     } else {
-        // Enemy's turn
+        // Enemy`s turn
         logMessage(`The ${currentEnemy.name} is preparing its attack...`);
         setTimeout(enemyAttack, 1000); // Wait a second before the enemy attacks
     }
 }
 
-// Function to handle a player's attack
+// Function to handle a player`s attack
 function playerAttack() {
-    // Disable the button to prevent spamming during the enemy's turn.
+    // Disable the button to prevent spamming during the enemy`s turn.
     disableButtons();
 
     // Calculate damage with a bit of randomness
@@ -366,23 +382,30 @@ function playerHeal() {
 
 
 
-// Function to handle an enemy's attack
+// Function to handle an enemy`s attack
 function enemyAttack() {
+    if (currentEnemy.currentHp <= currentEnemy.maxHp / 2 && midMatchMessage != "") {
+        logMessage(midMatchMessage);
+        updateUI();
+        setTimeout(() => {
+          }, 1500);
+    }
     const damage = Math.floor(randomInRange(0.75, 1.25) * currentEnemy.attackPower) + 1;
     playerData.hp = Math.max(0, playerData.hp - damage);
     logMessage(`The ${currentEnemy.name} attacks you for ${damage} damage.`);
     updateUI();
 
     if (playerData.hp <= 0) {
-        logMessage('You have been defeated... Returning to the map.');
+        logMessage(`You have been defeated... Returning to the map.`);
         disableButtons();
         playerData.hp = playerData.maxHp; // Restore HP for the next attempt
         savePlayerData();
         setTimeout(() => {
-            window.location.href = '../game.html';
+        
+        window.location.href = `../game.html`;
         }, 3000);
     } else {
-        // It's the player's turn again, so re-enable the button.
+        // It`s the player`s turn again, so re-enable the button.
         enableButtons();
     }
 }
@@ -395,11 +418,11 @@ function spawnEnemy() {
     }
 
     // Select an enemy pool based on the location, or use the default
-    const enemyPool = locationEnemyPools[gameLocation] || locationEnemyPools['default'];
+    const enemyPool = locationEnemyPools[gameLocation] || locationEnemyPools[`default`];
     const chosenEnemyInfo = getWeightedRandom(enemyPool);
     const enemyTemplate = enemyTemplates[chosenEnemyInfo.type];
 
-    // Create a copy so we don't modify the original template
+    // Create a copy so we don`t modify the original template
     currentEnemy = { ...enemyTemplate, currentHp: enemyTemplate.maxHp };
 
     // Add the new class for the current enemy
@@ -414,21 +437,84 @@ function spawnEnemy() {
     enableButtons();
 }
 
+function spawnScriptedEnemy(enemyType) {
+    // Clean up old classes from the previous enemy
+    if (currentEnemy.cssClass) {
+        enemyCharacterElement.classList.remove(currentEnemy.cssClass);
+    }
+
+    // Select an enemy pool based on the location, or use the default
+    const enemyTemplate = enemyTemplates[enemyType];
+
+    // Create a copy so we don`t modify the original template
+    currentEnemy = { ...enemyTemplate, currentHp: enemyTemplate.maxHp };
+
+    // Add the new class for the current enemy
+    enemyCharacterElement.classList.add(currentEnemy.cssClass);
+
+    currentEnemy.maxHp = currentEnemy.maxHp;
+    currentEnemy.currentHp = currentEnemy.maxHp;
+    currentEnemy.attackPower = currentEnemy.attackPower;
+
+    logMessage(`A ${currentEnemy.name} appears!`);
+    updateUI();
+    enableButtons();
+}
+
 // --- EVENT LISTENERS ---
-attackButton.addEventListener('click', () => {
+attackButton.addEventListener(`click`, () => {
     playerAttack();
 });
 
-healButton.addEventListener('click', () => {
+healButton.addEventListener(`click`, () => {
     playerHeal();
 });
 
 // --- GAME START ---
 
 // Set the initial message based on the location
+const urlParams = new URLSearchParams(window.location.search);
+const gameLocation = urlParams.get(`location`) || `default`; // Use `default` if no location is provided
 
-logMessage(`You enter the ${gameLocation}...`);
-updateUI(); // Initial UI update for player stats before the first enemy appears
+const locationInfo = gameData.locations[gameLocation] || gameData.locations.default;
+document.getElementById("title-message").textContent = locationInfo.name;
+document.getElementById("battle-scene").style.backgroundColor = locationInfo.backgroundColor;
 
-// Spawn the first enemy for this location
-spawnEnemy();
+let maxEnemies = (Math.floor(locationInfo.maxEnemies * randomInRange(0.75, 1.25))) + 1;
+
+let currentEnemy = {};
+let enemiesDefeated = 0;
+let returnUrl = "";
+let midMatchMessage = "";
+
+let gainItem = false;
+
+if (urlParams.get(`scripted`) >= 1){
+
+    if (gameLocation == "forest") {
+        if (urlParams.get(`scripted`) == 1) {
+            logMessage(`You turn to leave when a booming man looms over you.`);
+            updateUI();
+
+            spawnScriptedEnemy("Operation Manager");
+
+            maxEnemies = 1;
+
+            returnUrl = "../game.html";
+
+            midMatchMessage = "     \"I WILL GET THAT POWER STONE!\"";
+
+            gainItem = true;
+        }
+    }
+
+} else {
+    
+
+    logMessage(`You enter the ${gameLocation}...`);
+    updateUI(); // Initial UI update for player stats before the first enemy appears
+
+    // Spawn the first enemy for this location
+
+    spawnEnemy(); 
+}
