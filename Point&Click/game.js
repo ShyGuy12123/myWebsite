@@ -120,6 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function returnToHome(){
+    window.location.href = "../index.html";
+}
+
 function resetData() {
     playerData = { ...JSON.parse(JSON.stringify(defaultPlayerData)) };
     savePlayerData();
