@@ -20,23 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let combinationCleared = false;
     let itemCollected = false;
 
-    if (checkLocation()) {
-        returnButton.classList.remove('hidden');
-        messageEl.textContent = "It appears that you have already been here.";
-        combinationCleared = true;
-        ped_1.style.opacity = '0.5';
-        ped_2.style.opacity = '0.5';
-        ped_3.style.opacity = '0.5';
-        ped_4.style.opacity = '0.5'; // Make it look used
-    }
-
 
     // --- Event Listeners ---
 
     function checkLocation() {
         // Get the URL parameters to find out which location we're at
-        const params = new URLSearchParams(window.location.search);
-        const locationId = params.get('location');
+        const locationId = 'forest';
 
         for (let i = 0; i < playerData.clearedLocations.length; i++) {
             if (playerData.clearedLocations[i] === locationId) {
@@ -232,4 +221,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     //updateInventoryDisplay(); // Initial display on page load
+    if (checkLocation()) {
+        returnButton.classList.remove('hidden');
+        returnButton.setAttribute('href', '../../game.html')
+        messageEl.textContent = "It appears that you have already been here.";
+        combinationCleared = true;
+        ped_1.style.opacity = '0.5';
+        ped_1.textContent = "☠️";
+        ped_2.style.opacity = '0.5';
+        ped_2.textContent = "🌱";
+        ped_3.style.opacity = '0.5';
+        ped_3.textContent = "🍎";
+        ped_4.style.opacity = '0.5'; // Make it look used
+        ped_4.textContent = "🌸";
+    }
 });
+
