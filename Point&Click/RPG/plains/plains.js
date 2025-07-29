@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const blueButton = document.getElementById('blueButton');
     const yellowButton = document.getElementById('yellowButton');
     const greenButton = document.getElementById('greenButton');
-    const boostItemEl = document.getElementById('boost-item');
+    const metalDoor = document.getElementById('continueButton');
     const returnButton = document.getElementById('return-button');
 
     // --- Game State ---
@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function setButtonsDisabled(disabled) {
         Object.values(buttons).forEach(btn => btn.el.disabled = disabled);
         isPlayerTurn = !disabled;
+        if (disabled) {
+            Object.values(buttons).forEach(btn => btn.el.style.filter = 'brightness(50%)');
+        } else {
+            Object.values(buttons).forEach(btn => btn.el.style.filter = 'brightness(100%)');
+        }
     }
 
     // --- Puzzle Logic ---
@@ -49,9 +54,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         for (const colorNum of puzzle) {
             const button = buttons[colorNum];
             if (button) {
-                button.el.style.filter = 'brightness(200%)'; // Flash effect
+                button.el.style.filter = 'brightness(150%)'; // Flash effect
                 await sleep(500); // How long the flash lasts
-                button.el.style.filter = 'brightness(100%)'; // Reset
+                button.el.style.filter = 'brightness(50%)'; // Reset
                 await sleep(250); // Pause between flashes
             }
         }
@@ -74,10 +79,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // If the player has entered the full, correct sequence
         if (playerSequence.length === puzzle.length) {
             combinationCleared = true;
-            messageEl.textContent = "You hear a click! A secret compartment opens.";
-            boostItemEl.classList.remove('hidden');
+            messageEl.textContent = "You hear a thud! The metal door opens.";
+            metalDoor.classList.remove('closed');
+            metalDoor.classList.add('open');
             setButtonsDisabled(true);
-            Object.values(buttons).forEach(btn => btn.el.style.opacity = '0.5');
         }
     }
 
@@ -91,13 +96,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Initialization ---
     function initializeGame() {
         // Check if the location has already been cleared
-        if (playerData.clearedLocations && playerData.clearedLocations.includes(locationId)) {
+        if (playerData.clearedLocations && playerData.clearedLocations.includes('plains')) {
             combinationCleared = true;
-            messageEl.textContent = "You have already solved this puzzle.";
-            boostItemEl.classList.add('hidden'); // Hide item if already collected
+            messageEl.textContent = "You have already beaten this outpost.";
+            metalDoor.classList.add('closed'); // Hide item if already collected
             returnButton.classList.remove('hidden');
             setButtonsDisabled(true);
-            Object.values(buttons).forEach(btn => btn.el.style.opacity = '0.5');
+            // Object.values(buttons).forEach(btn => btn.el.style.opacity = '0.5');
             return;
         }
 
@@ -118,26 +123,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     greenButton.addEventListener('click', () => handlePlayerInput(4));
 
     // Click on the boost item
-    /*boostItemEl.addEventListener('click', () => {
-        if (itemCollected) return;
-        itemCollected = true;
-
-        if (typeof playerData !== 'undefined' && typeof savePlayerData !== 'undefined') {
-            if (!playerData.clearedLocations) playerData.clearedLocations = [];
-            if (!playerData.clearedLocations.includes(locationId)) {
-                playerData.clearedLocations.push(locationId);
-            }
-            // Add specific item/bonus for this puzzle if needed
-            messageEl.textContent = "You collected the item!";
-            savePlayerData();
-        } else {
-            console.warn('playerData object or savePlayerData function not found. Progress will not be saved.');
-        }
-
-        boostItemEl.classList.add('hidden');
-        returnButton.classList.remove('hidden');
-    });*/
-    
+    metalDoor.addEventListener('click', () => {
+        if (combinationCleared) {
+            messageEl.textContent = "You entered the outpost!";
+        
+            setTimeout(() => {
+            window.location.href = "../rpg.html?location=plains&indoor=true&scripted=1";
+            }, 3000);
+        }    // Add specific item/bonus for this puzzle if needed
+    });
     // --- Start Game ---
     initializeGame();
 });

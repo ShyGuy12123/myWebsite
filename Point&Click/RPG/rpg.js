@@ -339,7 +339,15 @@ function endOfTurn() {
                         window.location.href = `${locationInfo.filePath}/${gameLocation}.html`;
                     }
                     
+                } else if (gameLocation == "plains") {
+                    if (returnUrl != "") {
+                        window.location.href = returnUrl;
+                    } else {
+                        console.log('It should work');
+                        window.location.href = `${locationInfo.filePath}/${gameLocation}.html`;
+                    }    
                 } else {
+                    console.log('Why is it here?');
                     window.location.href = `cleared.html?location=` + gameLocation;
                 }
                 
@@ -348,9 +356,12 @@ function endOfTurn() {
             // Spawn the next enemy after a delay
             logMessage(`A new challenger approaches...`);
             savePlayerData(); // Save progress between enemies
-            setTimeout(spawnEnemy, 2000);
+            if (scriptedEnemy != "") {
+                setTimeout(spawnScriptedEnemy(scriptedEnemy), 2000);
+            } else {
+                setTimeout(spawnEnemy, 2000);
+            }
         }
-
     } else {
         // Enemy`s turn
         logMessage(`The ${currentEnemy.name} is preparing its attack...`);
@@ -386,6 +397,7 @@ function playerHeal() {
 function enemyAttack() {
     if (currentEnemy.currentHp <= currentEnemy.maxHp / 2 && midMatchMessage != "") {
         logMessage(midMatchMessage);
+        midMatchMessage = "";
         updateUI();
         setTimeout(() => {
           }, 1500);
@@ -478,7 +490,13 @@ const gameLocation = urlParams.get(`location`) || `default`; // Use `default` if
 
 const locationInfo = gameData.locations[gameLocation] || gameData.locations.default;
 document.getElementById("title-message").textContent = locationInfo.name;
-document.getElementById("battle-scene").style.backgroundColor = locationInfo.backgroundColor;
+if (urlParams.get(`indoor`) == true) {
+    document.getElementById("battle-scene").style.backgroundColor = 'brown';
+
+} else {
+    document.getElementById("battle-scene").style.backgroundColor = locationInfo.backgroundColor;
+
+}
 
 let maxEnemies = (Math.floor(locationInfo.maxEnemies * randomInRange(0.75, 1.25))) + 1;
 
@@ -486,6 +504,7 @@ let currentEnemy = {};
 let enemiesDefeated = 0;
 let returnUrl = "";
 let midMatchMessage = "";
+let scriptedEnemy = "";
 
 let gainItem = false;
 
@@ -505,6 +524,20 @@ if (urlParams.get(`scripted`) >= 1){
             midMatchMessage = "     \"I WILL GET THAT POWER STONE!\"";
 
             gainItem = true;
+        }
+    } else if (gameLocation == "plains") {
+        if (urlParams.get(`scripted`) == 1) {
+            logMessage(`You enter the outpost to find some grunts blocking your way.`);
+            updateUI();
+
+            spawnScriptedEnemy("Easy Grunt");
+
+            scriptedEnemy = "Easy Grunt";
+
+            maxEnemies = 3;
+
+            //returnUrl = "../game.html";
+
         }
     }
 
