@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Hidden Grove</title>
+    <link rel="stylesheet" href="plains.css">
+</head>
+
+<body>
+    <div id="game-container" class="cleared-container">
+        <h1 id="cleared-title">A Towering Post</h1>
+        <p id="puzzle-message">You see a color panel on the wall. It begins to flash.</p>
+
+        <div id="puzzle-scene">
+            <p>Great Plains Outpost</p>
+
+            <div id="blueButton" class="puzzle-item"></div>
+            <div id="redButton" class="puzzle-item"></div>
+            <div id="yellowButton" class="puzzle-item"></div>
+            <div id="greenButton" class="puzzle-item"></div>
+            <div id="continueButton" class="closed" title="A metal door"></div>
+        </div>
+        
+        <div id="inventory">
+            <h2>Inventory</h2>
+            <div id="inventory-slots"></div>
+        </div>
+
+        <a href="../../game.html" class="action-button hidden" id="return-button">Return to World Map</a>
+    </div>
+    <!-- Link to the shared data file -->
+    <script src="../../data.js"></script>
+    <!-- Script to customize this page's content -->
+    <script src="plains.js" defer></script>
+</body>
+
+</html>
