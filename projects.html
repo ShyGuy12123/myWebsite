@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="all" href="styles.css">
     <link rel="stylesheet" type="text/css" href="tswnavbar.css" />
+    <script src="hamburger.js"></script>
+    <script src="scroll.js" defer></script>
 </head>
 
 <body>
@@ -32,7 +34,7 @@
 
                 <h1>Welcome</h1>
                 <p>
-                    Placeholder content. Replace everything here with your actual content.
+                    This page is about my experience and the projects that I worked with at the WPI Frontiers Program.
                 </p>
                 <p>
                     If you want a navigation menu for your side column that looks like the one on thesitewizard.com,
@@ -57,6 +59,33 @@
                 </p>
                 <p>&nbsp;</p>
 
+                <div id="scroll-frame">
+                    <div class="scroll-card" data-link = "word_fold/game.html">
+                        <h3>Word Fold</h3>
+                        <p>This is a game where you have to solve puzzles by moving the text around to form words.</p>
+                    </div>
+                    <div class="scroll-card" data-link = "clickgame/index.html">
+                        <h3>Clicker Game</h3>
+                        <p>This is a game where you purchase lawn, harvesting grass for money to buy and house goats.</p>
+                    </div>
+                    <div class="scroll-card" data-link = "aicook/index.html">
+                        <h3>AI Cooking Application</h3>
+                        <p>This is an application where an AI will generate recipes for you based on the food and cuisine type that you provide it.</p>
+                    </div>
+                    <div class="scroll-card" data-link = "storytelling/index.html">
+                        <h3>AI Chatbot</h3>
+                        <p>This is an application where you can talk, through your microphone, to an AI and get responses spoken through TTS.</p>
+                    </div>
+                    <div class="scroll-card" data-link = "ponggame/index.html">
+                        <h3>PONG</h3>
+                        <p>You can play classic PONG.</p>
+                    </div>
+                    <div class="scroll-card" data-link = "Point&Click/game.html">
+                        <h3>World Hero</h3>
+                        <p>This is a game that mixes Point & Click, RPG, and Puzzle Solver elements together to create a fun experience.</p>
+                    </div>
+                </div>
+
                 <!-- end of content column: put your content above this line -->
             </div>
         </div>
@@ -65,14 +94,24 @@
             <div id="tswsideproper">
                 <!-- start of side column: insert your navigation menu, etc, here -->
 
-                <div id="tswcssbuttons">
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="aboutme.html">About Me</a></li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="game.html">Game</a></li>
-                        <li><a href="rpg.html">RPG</a></li>
-                    </ul>
+                <button type="button" id="tswhamburger" title="Click to expand menu"
+                    onclick="tsw_expand_navmenu();">&equiv;</button>
+                <!-- end of hamburger menu button -->
+                <div id="custombox">
+                    
+                    <div id="tswcssbuttons">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="aboutme.html">About Me</a></li>
+                            <li><a href="projects.html">Projects</a></li>
+                            <!-- <li><a href="Point&Click/game.html">World Hero</a></li>
+                            <li><a href="word_fold/game.html">Word Fold</a></li>
+                            <li><a href="clickgame/index.html">Gompei's Grass Game</a></li>
+                            <li><a href="aicook/index.html">AI Cooker</a></li>
+                            <li><a href="storytelling/index.html">AI Chatbot</a></li>
+                            <li><a href="ponggame/index.html">PONG</a></li> -->
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- end of side column: put your navigation menu, etc, above this line -->

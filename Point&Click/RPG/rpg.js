@@ -84,6 +84,8 @@ const enemyTemplates = {
 
     'Operation Manager': { name: 'Operation Manager', maxHp: 75, attackPower: 10, cssClass: 'om' },
 
+    'Hard Operation Manager': { name: 'Operation Manager', maxHp: 150, attackPower: 50, cssClass: 'om' },
+
     'Regional Leader': { name: 'Regional Leader', maxHp: 200, attackPower: 140, cssClass: 'rl' },
 
     'The Boss': { name: 'The Boss', maxHp: 500, attackPower: 500, cssClass: 'boss' },
@@ -341,6 +343,20 @@ function endOfTurn() {
                     
                 } else if (gameLocation == "plains") {
                     if (returnUrl != "") {
+                        if (gainItem == true) {
+                            playerData.clearedLocations.push("plains");
+
+                            playerData.attackPower = Math.floor(playerData.hp * 1.25);
+                            playerData.attackMultiplier = 1.25;
+                            playerData.items.push('Robotic Arm');
+                
+                            savePlayerData();
+
+                            setTimeout(() => {
+                                logMessage('The ROBOTIC ARM began to whir! You could feel it increasing your attack power by 25%!');
+                            }, 4000);
+                            console.log('Player data updated:', playerData);
+                        }
                         window.location.href = returnUrl;
                     } else {
                         console.log('It should work');
@@ -536,8 +552,32 @@ if (urlParams.get(`scripted`) >= 1){
 
             maxEnemies = 3;
 
-            //returnUrl = "../game.html";
+            returnUrl = "plains/plains2.html";
 
+        } else if (urlParams.get(`scripted`) == 2) {
+            logMessage('You venture deeper to find more grunts.');
+            updateUI();
+
+            spawnScriptedEnemy("Grunt")
+
+            scriptedEnemy = "Grunt";
+
+            maxEnemies = 2;
+
+            returnUrl = "plains/plains3.html";
+        } else if (urlParams.get(`scripted`) == 3) {
+            logMessage('You venture deeper to find more grunts.');
+            updateUI();
+
+            spawnScriptedEnemy("Hard Operation Manager")
+
+            maxEnemies = 1;
+
+            returnUrl = "../game.html";
+
+            midMatchMessage = "     \"YOU WON\'T GET AWAY FROM ME!\"";
+
+            gainItem = true;
         }
     }
 

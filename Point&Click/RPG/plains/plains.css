@@ -173,6 +173,19 @@ body {
     /* Indicates the title attribute has info */
 }
 
+#boost-item {
+    bottom: 25%;
+    right: 25%;
+    width: 50px;
+    height: 50px;
+}
+
+#boost-item:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px #00FFFF);
+}
+
+
 .selected {
     background-color: #d0ff00;
 }

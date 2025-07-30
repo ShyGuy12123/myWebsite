@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="all" href="styles.css">
     <link rel="stylesheet" type="text/css" href="tswnavbar.css" />
+    <script src="hamburger.js"></script>
 </head>
 
 <body>
@@ -57,14 +58,24 @@
             <div id="tswsideproper">
                 <!-- start of side column: insert your navigation menu, etc, here -->
 
-                <div id="tswcssbuttons">
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="aboutme.html">About Me</a></li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="game.html">Game</a></li>
-                        <li><a href="rpg.html">RPG</a></li>
-                    </ul>
+                <button type="button" id="tswhamburger" title="Click to expand menu"
+                    onclick="tsw_expand_navmenu();">&equiv;</button>
+                <!-- end of hamburger menu button -->
+                <div id="custombox">
+                    
+                    <div id="tswcssbuttons">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="aboutme.html">About Me</a></li>
+                            <li><a href="projects.html">Projects</a></li>
+                            <!-- <li><a href="Point&Click/game.html">World Hero</a></li>
+                            <li><a href="word_fold/game.html">Word Fold</a></li>
+                            <li><a href="clickgame/index.html">Gompei's Grass Game</a></li>
+                            <li><a href="aicook/index.html">AI Cooker</a></li>
+                            <li><a href="storytelling/index.html">AI Chatbot</a></li>
+                            <li><a href="ponggame/index.html">PONG</a></li> -->
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- end of side column: put your navigation menu, etc, above this line -->

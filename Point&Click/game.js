@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function returnToHome(){
-    window.location.href = "../index.html";
+    window.location.href = "../projects.html";
 }
 
 function resetData() {
