@@ -107,7 +107,7 @@ body {
 .point {
     position: absolute;
     transform-origin: center;
-    color: aqua;
+    color: maroon;
     animation-name: point-float;
     animation-timing-function: linear;
     animation-duration: 1s;
@@ -136,6 +136,18 @@ body {
     100% {
         width: 0%;
     }
+}
+
+.pointField {
+    position: absolute;
+    transform-origin: center;
+    color: aqua;
+    animation-name: point-float;
+    animation-timing-function: linear;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    left: 50%;
+    top: 50%;
 }
 
 #return-button {

@@ -2,12 +2,34 @@ const widget_container = document.getElementById("widget-container");
 const stores = document.getElementsByClassName("store");
 const score_element = document.getElementById("score");
 const field_element = document.getElementById("field");
+
 let score = 5;
 let own_field = 0;
 let super_gompei_count = 0;
 
-function changeScore(amount, sqft) {
+function changeScore(amount, sqft, addingLawn = false) {
     score += amount;
+    if (sqft > 0 && addingLawn) {
+        let lawnsqft = 0;
+        for (let x = 0; x < stores.length; x++) {
+            console.log(stores[x].getAttribute("name"))
+            if (lawnsqft >= sqft) break;
+            try {
+                if (stores[x].getAttribute("name") === "Lawn") {
+                    let newWidget = stores[x].firstElementChild.cloneNode(true);
+                    newWidget.onclick = () => {
+                        harvest(newWidget);
+                    }
+                    console.log(stores[x])
+                    widget_container.appendChild(newWidget);
+                    lawnsqft += 5;
+                break;
+                }
+            } catch (e) {
+            console.log(e)
+            }
+        }
+    }
     own_field += sqft;
     score_element.innerHTML = "Score: " + score;
     field_element.innerHTML = "Sqft: " + own_field;
@@ -93,7 +115,10 @@ function harvest(widget) {
     widget.setAttribute("harvesting", "");
 
     // If manual, collect points now
-    changeScore(parseInt(widget.getAttribute("reap")), parseInt(widget.getAttribute("reap2")));
+    changeScore(parseInt(widget.getAttribute("reap")), parseInt(widget.getAttribute("reap2")), true);
+    if (widget.getAttribute("reap") > 0) showPoint(widget);
+    if (widget.getAttribute("reap2") > 0) showPointLawn(widget);
+
     showPoint(widget);
 
     setup_end_harvest(widget);
@@ -109,5 +134,16 @@ function showPoint(widget) {
     }
     widget.appendChild(number);
 }
+
+function showPointLawn(widget) {
+    let number = document.createElement("span");
+    number.className = "pointField";
+    number.innerHTML = "+" + widget.getAttribute("reap2");
+    number.onanimationend = () => {
+        widget.removeChild(number);
+    }
+    widget.appendChild(number);
+}
+
 
 changeScore(0, 0);

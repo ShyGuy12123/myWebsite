@@ -11,11 +11,12 @@
 /* Main body styling - centers content and sets overall appearance */
 body {
   font-family: Arial, sans-serif;  /* Clean, readable font */
-  background: #f4f4f4;            /* Light gray background */
+  /* background: #f4f4f4;            Light gray background */
   padding: 30px;                  /* Space around content */
   max-width: 700px;               /* Limit width for readability */
   margin: auto;                   /* Center content horizontally */
-  color: #333;                    /* Dark gray text for good contrast */
+  color: #9c9c9c;                    /* Dark gray text for good contrast */
+  background-color: #414141;
 }
 
 /* =============================================================================
