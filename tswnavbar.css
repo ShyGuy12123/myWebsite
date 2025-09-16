@@ -26,7 +26,7 @@
     /* Optional: Add some basic styling for the panel */
     height: 100vh; /* Full viewport height */
     width: 250px; /* Adjust width as needed */
-    background: #fff; /* A background color is important */
+    background: #4b4b4b; /* A background color is important */
     box-shadow: 3px 0 15px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
     z-index: 1000; /* Ensure it's above other content */
 }
@@ -54,8 +54,8 @@
 	font-family: "Courier" ;
 }
 #tswcssbuttons li a {
-	color: #000000 ;
-	background-color: #ffffff ;
+	color: #d1d1d1 ;
+	background-color: #4b4b4b ;
 	border: 1px outset #000000 ;
 	text-decoration: none ;
 	display: block ;
@@ -63,8 +63,8 @@
 	border-radius: 10%;
 }
 #tswcssbuttons li a:hover {
-	color: #000000 ;
-	background-color: #c0c0c0 ;
+	color: #d1d1d1 ;
+	background-color: #414141 ;
 }
 #tswhamburger {
 	cursor: pointer;
@@ -88,7 +88,7 @@
     /* Optional: Add some basic styling for the panel */
     /* height: 100vh; Full viewport height */
     /* width: 250px; Adjust width as needed */
-    background: #fff; /* A background color is important */
+    background: #4b4b4b; /* A background color is important */
     box-shadow: 3px 0 15px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
     z-index: 1000; /* Ensure it's above other content */
 }
@@ -100,12 +100,12 @@
 		width: 2em ;
 		font-weight: bold ;
 		font-size: 150% ;
-		color: #000000 ;
-		background-color: #ffffff ;
+		color: #d1d1d1 ;
+		background-color: #4b4b4b ;
 	}
 	#tswhamburger:hover {
-		color: #ffffff ;
-		background-color: #000000 ;
+		color: #d1d1d1 ;
+		background-color: #414141 ;
 	}
 	#tswcssbuttons {
 		display: none ;
